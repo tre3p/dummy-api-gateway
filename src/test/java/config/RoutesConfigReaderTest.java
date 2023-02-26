@@ -23,8 +23,6 @@ public class RoutesConfigReaderTest {
 
     private static final String correctConfigPath = FIXTURES_PATH + "gateway-config-test-correct.yml";
 
-    private static final String invalidConfigPath = FIXTURES_PATH + "gateway-config-test-invalid.yml";
-
     private static final String notExistsConfigPath = FIXTURES_PATH + "gateway-config-test-not-exists.yml";
 
     private final Routes expectedRoutes = new Routes(
