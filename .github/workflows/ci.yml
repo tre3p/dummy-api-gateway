@@ -1,0 +1,29 @@
+name: Project Checks
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Maven
+        uses: s4u/setup-maven-action@v1.7.0
+        with:
+          java-version: 17
+          maven-version: 3.8.3
+      - name: Run lint
+        run: mvn checkstyle:check
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Maven
+        uses: s4u/setup-maven-action@v1.7.0
+        with:
+          java-version: 17
+          maven-version: 3.8.3
+      - name: Run tests
+        run: mvn test
