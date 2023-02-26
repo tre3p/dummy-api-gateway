@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.treep.config.RoutesConfigReader;
 import com.treep.config.model.RouteDefinition;
+import com.treep.config.model.Routes;
 import com.treep.exception.ConfigurationReadingException;
 import com.treep.util.Constants;
 import org.junit.jupiter.api.Assertions;
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.util.Map;
+import java.util.List;
 
 import static util.Utils.FIXTURES_PATH;
 
@@ -26,20 +27,21 @@ public class RoutesConfigReaderTest {
 
     private static final String notExistsConfigPath = FIXTURES_PATH + "gateway-config-test-not-exists.yml";
 
-    private final Map<String, RouteDefinition> expectedMap = Map.of(
-            "/sample-endpoint", new RouteDefinition(
-                    "http://localhost:8080",
-                    "/sample-endpoint",
-                    10,
-                    400
-            ),
-            "/sample-url", new RouteDefinition(
-                    "http://localhost:9090",
-                    "/sample-url",
-                    20,
-                    500
-            )
-    );
+    private final Routes expectedRoutes = new Routes(
+            List.of(
+                    new RouteDefinition(
+                            "http://localhost:8080",
+                            "/sample-endpoint",
+                            10,
+                            400
+                    ),
+                    new RouteDefinition(
+                            "http://localhost:9090",
+                            "/sample-url",
+                            20,
+                            500
+                    )
+            ));
 
     @BeforeAll
     void beforeAll() {
@@ -49,18 +51,9 @@ public class RoutesConfigReaderTest {
 
     @Test
     void shouldCorrectlyReadMultipleConfigurationsFromYAML() throws ConfigurationReadingException {
-        Map<String, RouteDefinition> result = routesConfigReader.readRouteProperties(correctConfigPath);
+        Routes actual = routesConfigReader.readRouteProperties(correctConfigPath);
 
-        Assertions.assertEquals(expectedMap, result);
-    }
-
-    @Test
-    void shouldThrowExceptionOnNonUniqueSourceEndpoints() {
-        Assertions.assertThrows(
-                ConfigurationReadingException.class,
-                () -> routesConfigReader.readRouteProperties(invalidConfigPath),
-                Constants.ERROR_CONFIG_INVALID
-                );
+        Assertions.assertEquals(expectedRoutes, actual);
     }
 
     @Test
