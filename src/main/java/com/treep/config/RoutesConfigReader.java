@@ -24,7 +24,14 @@ public class RoutesConfigReader {
         this.objectMapper = objectMapper;
     }
 
-    public Map<String, RouteDefinition> readRouteProperties(String routesFilePath) {
+    /**
+     * Reads file in any format in which {@link ObjectMapper} configured.
+     * Creates Map<String, RouteDefinition>, where key is 'source-endpoint' field from configuration file.
+     *
+     * @param routesFilePath - path to file with configurations
+     * @return
+     */
+    public Map<String, RouteDefinition> readRouteProperties(String routesFilePath) throws ConfigurationReadingException {
         File routesConfigFile = new File(routesFilePath);
 
         Routes gatewayRoutes;

@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * POJO for storing collection of {@link RouteDefinition}
+ */
 @Getter
 @Setter
 public class Routes {

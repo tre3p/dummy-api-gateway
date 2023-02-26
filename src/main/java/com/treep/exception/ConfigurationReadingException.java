@@ -1,6 +1,9 @@
 package com.treep.exception;
 
-public class ConfigurationReadingException extends RuntimeException {
+/**
+ * Exception which thrown on any issue with reading/validating routes definitions
+ */
+public class ConfigurationReadingException extends Exception {
 
     public ConfigurationReadingException(String message) {
         super(message);

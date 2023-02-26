@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * POJO for storing information about one route definition
+ */
 @Getter
 @Setter
 @EqualsAndHashCode

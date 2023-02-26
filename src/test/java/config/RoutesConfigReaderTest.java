@@ -19,11 +19,11 @@ public class RoutesConfigReaderTest {
 
     private RoutesConfigReader routesConfigReader;
 
-    private final String correctConfigPath = FIXTURES_PATH + "gateway-config-test-correct.yml";
+    private static final String correctConfigPath = FIXTURES_PATH + "gateway-config-test-correct.yml";
 
-    private final String invalidConfigPath = FIXTURES_PATH + "gateway-config-test-invalid.yml";
+    private static final String invalidConfigPath = FIXTURES_PATH + "gateway-config-test-invalid.yml";
 
-    private final String notExistsConfigPath = FIXTURES_PATH + "gateway-config-test-not-exists.yml";
+    private static final String notExistsConfigPath = FIXTURES_PATH + "gateway-config-test-not-exists.yml";
 
     private final Map<String, RouteDefinition> expectedMap = Map.of(
             "/sample-endpoint", new RouteDefinition(
@@ -47,7 +47,7 @@ public class RoutesConfigReaderTest {
     }
 
     @Test
-    void shouldCorrectlyReadMultipleConfigurationsFromYAML() {
+    void shouldCorrectlyReadMultipleConfigurationsFromYAML() throws ConfigurationReadingException {
         Map<String, RouteDefinition> result = routesConfigReader.readRouteProperties(correctConfigPath);
 
         Assertions.assertEquals(expectedMap, result);
@@ -68,6 +68,4 @@ public class RoutesConfigReaderTest {
                 () -> routesConfigReader.readRouteProperties(notExistsConfigPath)
         );
     }
-
-
 }
