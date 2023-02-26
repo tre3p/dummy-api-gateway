@@ -14,9 +14,9 @@ import java.util.Set;
 
 public class RoutesConfigReader {
 
-    private final String ERROR_CONFIG_READING = "Error while reading configuration.";
+    private static final String ERROR_CONFIG_READING = "Error while reading configuration.";
 
-    private final String ERROR_CONFIG_INVALID = "Configuration is invalid, 'source-endpoint' must be unique.";
+    private static final String ERROR_CONFIG_INVALID = "Configuration is invalid, 'source-endpoint' must be unique.";
 
     private final ObjectMapper objectMapper;
 

@@ -1,7 +1,6 @@
 package com.treep.config.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 
 public class RouteDefinition {
@@ -62,13 +61,13 @@ public class RouteDefinition {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
         RouteDefinition that = (RouteDefinition) o;
-        return requestTimeout == that.requestTimeout &&
-                failStatusCode == that.failStatusCode &&
-                Objects.equals(targetUrl, that.targetUrl) &&
-                Objects.equals(sourceEndpoint, that.sourceEndpoint);
+        return requestTimeout == that.requestTimeout
+                && failStatusCode == that.failStatusCode
+                && Objects.equals(targetUrl, that.targetUrl)
+                && Objects.equals(sourceEndpoint, that.sourceEndpoint);
     }
 
     @Override
