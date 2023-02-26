@@ -32,7 +32,6 @@ public class RoutesConfigReader {
         try {
             gatewayRoutes = objectMapper.readValue(routesConfigFile, Routes.class);
         } catch (IOException e) {
-            System.out.println("error while reading file"); // TODO: replace by logging
             throw new ConfigurationReadingException(ERROR_CONFIG_READING, e);
         }
 
