@@ -1,0 +1,9 @@
+routes:
+  - target-url: http://localhost:8080
+    source-endpoint: /sample-endpoint
+    request-timeout: 10
+    fail-status-code: 400
+  - target-url: http://localhost:8080
+    source-endpoint: /sample-url
+    request-timeout: 10
+    fail-status-code: 400
