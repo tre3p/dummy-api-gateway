@@ -16,6 +16,12 @@
     </properties>
 
     <dependencies>
+        <!--Web Server-->
+        <dependency>
+            <groupId>io.undertow</groupId>
+            <artifactId>undertow-core</artifactId>
+            <version>2.3.4.Final</version>
+        </dependency>
         <!--Used to map YAML to objects-->
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -36,6 +42,7 @@
             <version>1.18.26</version>
             <scope>provided</scope>
         </dependency>
+        <!--Logger-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
