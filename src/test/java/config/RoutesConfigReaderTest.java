@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.treep.config.RoutesConfigReader;
 import com.treep.config.model.RouteDefinition;
 import com.treep.exception.ConfigurationReadingException;
+import com.treep.util.Constants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,8 @@ public class RoutesConfigReaderTest {
     void shouldThrowExceptionOnNonUniqueSourceEndpoints() {
         Assertions.assertThrows(
                 ConfigurationReadingException.class,
-                () -> routesConfigReader.readRouteProperties(invalidConfigPath)
+                () -> routesConfigReader.readRouteProperties(invalidConfigPath),
+                Constants.ERROR_CONFIG_INVALID
                 );
     }
 
@@ -65,7 +67,16 @@ public class RoutesConfigReaderTest {
     void shouldThrowExceptionOnNotExistsConfigFilePath() {
         Assertions.assertThrows(
                 ConfigurationReadingException.class,
-                () -> routesConfigReader.readRouteProperties(notExistsConfigPath)
+                () -> routesConfigReader.readRouteProperties(notExistsConfigPath),
+                Constants.ERROR_CONFIG_READING
+        );
+    }
+
+    @Test
+    void shouldThrowExceptionOnNullPassedInArgs() {
+        Assertions.assertThrows(
+                ConfigurationReadingException.class,
+                () -> routesConfigReader.readRouteProperties(null)
         );
     }
 }
