@@ -31,7 +31,8 @@ public class RoutesConfigReader {
      * @param routesFilePath - path to file with configurations
      * @return
      */
-    public Map<String, RouteDefinition> readRouteProperties(String routesFilePath) throws ConfigurationReadingException {
+    public Map<String, RouteDefinition> readRouteProperties(String routesFilePath)
+            throws ConfigurationReadingException {
         File routesConfigFile = new File(routesFilePath);
 
         Routes gatewayRoutes;
