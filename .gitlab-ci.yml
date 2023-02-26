@@ -1,0 +1,15 @@
+image: maven:3.8.3-openjdk-17
+
+stages:
+  - lint
+  - test
+
+lint:
+  stage: lint
+  script:
+    - mvn checkstyle:check
+
+unit-test:
+  stage: test
+  script:
+    - mvn test
