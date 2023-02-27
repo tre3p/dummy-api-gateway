@@ -5,10 +5,6 @@ package com.treep.exception;
  */
 public class ConfigurationReadingException extends Exception {
 
-    public ConfigurationReadingException(String message) {
-        super(message);
-    }
-
     public ConfigurationReadingException(String message, Throwable cause) {
         super(message, cause);
     }

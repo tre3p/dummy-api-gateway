@@ -35,10 +35,4 @@ public class RouteDefinition {
     @JsonProperty("request-timeout")
     private int requestTimeout;
 
-    /**
-     * Status code for api-gateway fails
-     */
-    @JsonProperty("fail-status-code")
-    private int failStatusCode;
-
 }

@@ -1,60 +1,106 @@
 package com.treep.validator;
 
-import com.treep.config.model.RouteDefinition;
 import com.treep.config.model.Routes;
+import com.treep.exception.RoutesValidationException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.treep.util.Constants.NULL_FIELD_TEMPLATE;
-import static com.treep.util.Constants.SOURCE_ENDPOINT_FIELD_NAME;
-import static com.treep.util.Constants.TARGET_URL_FIELD_NAME;
+import static com.treep.validator.ErrorConstants.NULL_FIELD_ERROR_TEMPLATE;
+import static com.treep.validator.ErrorConstants.REQUEST_TIMEOUT_ERROR;
+import static com.treep.validator.ErrorConstants.SOURCE_ENDPOINTS_NOT_UNIQUE_ERROR_TEMPLATE;
+import static com.treep.validator.ErrorConstants.SOURCE_ENDPOINT_FIELD_NAME;
+import static com.treep.validator.ErrorConstants.TARGET_URL_FIELD_NAME;
+import static com.treep.validator.ErrorConstants.URL_NOT_VALID_ERROR_TEMPLATE;
 
 @Slf4j
 public class RoutesValidator {
 
     private static String errorMessage;
 
-    public static boolean isRoutesValid(Routes gatewayRoutes) {
-        return gatewayRoutes.getRoutes().stream()
-                .anyMatch(RoutesValidator::isValid);
+    public static void validateRoutes(Routes routes) throws RoutesValidationException {
+        boolean isValid = isMinOccurredFieldsNullOrEmpty(routes)
+                && isSourceEndpointUnique(routes)
+                && isTargetUrlValid(routes)
+                && isRequestTimeoutValid(routes);
+
+        if (!isValid) {
+            throw new RoutesValidationException(errorMessage);
+        }
     }
 
-    private static boolean isValid(RouteDefinition routeDefinition) {
-        String sourceEndpoint = routeDefinition.getSourceEndpoint();
-        String targetUrl = routeDefinition.getTargetUrl();
+    /**
+     * Checks that all necessary fields in {@link Routes} are not null and not empty.
+     */
+    private static boolean isMinOccurredFieldsNullOrEmpty(Routes routes) {
+        return routes.getRoutes().stream().anyMatch(r -> {
+            String sourceEndpoint = r.getSourceEndpoint();
+            String targetUrl = r.getTargetUrl();
 
-        if (sourceEndpoint == null || sourceEndpoint.isEmpty()) {
-            errorMessage = String.format(NULL_FIELD_TEMPLATE, SOURCE_ENDPOINT_FIELD_NAME);
-        } else if (targetUrl == null || targetUrl.isEmpty()) {
-            errorMessage = String.format(NULL_FIELD_TEMPLATE, TARGET_URL_FIELD_NAME);
-        }
+            if (sourceEndpoint == null || sourceEndpoint.isEmpty()) {
+                errorMessage = String.format(NULL_FIELD_ERROR_TEMPLATE, SOURCE_ENDPOINT_FIELD_NAME);
+                return false;
+            } else if (targetUrl == null || targetUrl.isEmpty()) {
+                errorMessage = String.format(NULL_FIELD_ERROR_TEMPLATE, TARGET_URL_FIELD_NAME);
+                return false;
+            }
 
-        return sourceEndpoint != null && targetUrl != null;
+            return true;
+        });
     }
 
     /**
      * Checks if {@link Routes} contains non-unique 'source-endpoint' field
-     * @param gatewayRoutes constructed {@link Routes} objects with routes
-     * @return 'false' in case of 'source-endpoint' is not unique
      */
-    public static boolean isSourceEndpointsUnique(Routes gatewayRoutes) {
-        log.debug("+isSourceEndpointsUnique()");
-        Set<String> seenEndpoints = new HashSet<>();
+    private static boolean isSourceEndpointUnique(Routes routes) {
+        Set<String> seenSourceEndpoints = new HashSet<>();
 
-        for (RouteDefinition d : gatewayRoutes.getRoutes()) {
-            if (seenEndpoints.contains(d.getSourceEndpoint())) {
+        return routes.getRoutes().stream().anyMatch(r -> {
+            String sourceEndpoint = r.getSourceEndpoint();
+
+            if (seenSourceEndpoints.contains(sourceEndpoint)) {
+                errorMessage = String.format(SOURCE_ENDPOINTS_NOT_UNIQUE_ERROR_TEMPLATE, sourceEndpoint);
                 return false;
             }
-            seenEndpoints.add(d.getSourceEndpoint());
-        }
 
-        log.debug("-isSourceEndpointsUnique()");
-        return true;
+            seenSourceEndpoints.add(sourceEndpoint);
+            return true;
+        });
     }
 
-    public static String getErrorMessage() {
-        return errorMessage;
+    /**
+     * Checks that URL passed in {@link Routes} is valid URL
+     */
+    private static boolean isTargetUrlValid(Routes routes) {
+        return routes.getRoutes().stream().anyMatch(r -> {
+            String url = r.getTargetUrl();
+
+            try {
+                new URL(url).toURI();
+            } catch (MalformedURLException | URISyntaxException e) {
+                errorMessage = String.format(URL_NOT_VALID_ERROR_TEMPLATE, url);
+                return false;
+            }
+
+            return true;
+        });
+    }
+
+    /**
+     * Checks that request timeout is not negative
+     */
+    private static boolean isRequestTimeoutValid(Routes routes) {
+        return routes.getRoutes().stream().anyMatch(r -> {
+            if (r.getRequestTimeout() < 0) {
+                errorMessage = REQUEST_TIMEOUT_ERROR;
+                return false;
+            }
+
+            return true;
+        });
     }
 }

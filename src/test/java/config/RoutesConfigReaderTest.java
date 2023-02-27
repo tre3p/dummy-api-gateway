@@ -7,13 +7,14 @@ import com.treep.config.model.RouteDefinition;
 import com.treep.config.model.Routes;
 import com.treep.exception.ConfigurationReadingException;
 import com.treep.util.Constants;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static util.Utils.FIXTURES_PATH;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -30,14 +31,12 @@ public class RoutesConfigReaderTest {
                     new RouteDefinition(
                             "http://localhost:8080",
                             "/sample-endpoint",
-                            10,
-                            400
+                            10
                     ),
                     new RouteDefinition(
                             "http://localhost:9090",
                             "/sample-url",
-                            20,
-                            500
+                            20
                     )
             ));
 
@@ -51,12 +50,12 @@ public class RoutesConfigReaderTest {
     void shouldCorrectlyReadMultipleConfigurationsFromYAML() throws ConfigurationReadingException {
         Routes actual = routesConfigReader.readRouteProperties(correctConfigPath);
 
-        Assertions.assertEquals(expectedRoutes, actual);
+        assertEquals(expectedRoutes, actual);
     }
 
     @Test
     void shouldThrowExceptionOnNotExistsConfigFilePath() {
-        Assertions.assertThrows(
+        assertThrows(
                 ConfigurationReadingException.class,
                 () -> routesConfigReader.readRouteProperties(notExistsConfigPath),
                 Constants.ERROR_CONFIG_READING
@@ -65,7 +64,7 @@ public class RoutesConfigReaderTest {
 
     @Test
     void shouldThrowExceptionOnNullPassedInArgs() {
-        Assertions.assertThrows(
+        assertThrows(
                 ConfigurationReadingException.class,
                 () -> routesConfigReader.readRouteProperties(null)
         );
