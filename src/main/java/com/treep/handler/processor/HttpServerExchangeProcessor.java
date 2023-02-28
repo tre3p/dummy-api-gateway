@@ -26,12 +26,14 @@ public class HttpServerExchangeProcessor {
         Map<String, Deque<String>> queryString = getQueryParamsIfExists();
         byte[] requestBody = getRequestBodyIfExists();
         Map<String, String> requestHeaders = getHttpHeaders();
+        String sourceEndpoint = getSourceEndpoint();
 
         return new GatewayModel(
                 httpMethod,
                 requestBody,
                 requestHeaders,
-                queryString
+                queryString,
+                sourceEndpoint
         );
     }
 
@@ -63,5 +65,9 @@ public class HttpServerExchangeProcessor {
 
     private Map<String, Deque<String>> getQueryParamsIfExists() {
         return exchangeToProcess.getQueryParameters();
+    }
+
+    private String getSourceEndpoint() {
+        return exchangeToProcess.getRequestURI();
     }
 }

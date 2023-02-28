@@ -16,4 +16,6 @@ public class GatewayModel {
     private Map<String, String> requestHeaders;
 
     private Map<String, Deque<String>> queryParams;
+
+    private String sourceEndpoint;
 }
