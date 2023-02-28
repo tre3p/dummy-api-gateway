@@ -17,7 +17,7 @@ public class HttpServerExchangeProcessor {
     }
 
     public GatewayModel processExchange() throws IOException {
-        if (exchangeToProcess == null ) return null;
+        if (exchangeToProcess == null) { return null; }
         return process();
     }
 
