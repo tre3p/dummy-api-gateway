@@ -2,6 +2,7 @@ package com.treep;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.sun.net.httpserver.HttpServer;
 import com.treep.config.RoutesConfigReader;
 import com.treep.config.model.RouteDefinition;
 import com.treep.config.model.Routes;
@@ -11,11 +12,10 @@ import com.treep.exception.RoutesValidationException;
 import com.treep.handler.ApiGatewayHttpHandler;
 import com.treep.storage.RouteDefinitionStorage;
 import com.treep.validator.RoutesValidator;
-import io.undertow.Undertow;
-import io.undertow.server.HttpHandler;
-import io.undertow.server.handlers.BlockingHandler;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.Map;
 
 @Slf4j
@@ -24,9 +24,11 @@ public class Main {
     private static final String DEFAULT_CONFIG_PATH = "src/main/resources/gateway-config.yml";
     private static final int DEFAULT_SERVER_PORT = 8080;
 
-    public static void main(String[] args) throws ConfigurationReadingException, RoutesValidationException {
+    public static void main(String[] args)
+            throws ConfigurationReadingException, RoutesValidationException, IOException
+    {
         initStorage(DEFAULT_CONFIG_PATH);
-        launchServer(new ApiGatewayHttpHandler(), DEFAULT_SERVER_PORT);
+        launchServer(DEFAULT_SERVER_PORT);
     }
 
     private static void initStorage(String configPath) throws ConfigurationReadingException, RoutesValidationException {
@@ -48,15 +50,12 @@ public class Main {
         log.debug("-initStorage(): storage successfully initiated");
     }
 
-    private static void launchServer(HttpHandler gatewayHandler, int port) {
-        log.debug("+launchServer(): launching server at port: {}", port);
-        Undertow s = Undertow.builder()
-                .addHttpListener(port, "0.0.0")
-                .setHandler(new BlockingHandler(gatewayHandler))
-                .build();
-
+    private static void launchServer(int port) throws IOException {
+        log.debug("+launchServer(): launching server..");
+        HttpServer s = HttpServer.create(new InetSocketAddress(port), 0);
+        s.createContext("/", new ApiGatewayHttpHandler());
         s.start();
-        log.debug("-launchServer(): server successfully launched");
+        log.debug("-launchServer(): server successfully initialized at port: {}", port);
     }
 }
 

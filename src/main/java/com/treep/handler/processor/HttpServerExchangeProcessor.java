@@ -1,73 +1,71 @@
 package com.treep.handler.processor;
 
+import com.sun.net.httpserver.HttpExchange;
+import com.treep.exception.RouteDefinitionNotFoundException;
 import com.treep.handler.processor.model.GatewayModel;
-import io.undertow.server.HttpServerExchange;
+import com.treep.storage.RouteDefinitionStorage;
+import com.treep.util.Constants;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Deque;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class HttpServerExchangeProcessor {
 
-    private final HttpServerExchange exchangeToProcess;
+    private final HttpExchange httpExchange;
 
-    public HttpServerExchangeProcessor(HttpServerExchange exchangeToProcess) {
-        this.exchangeToProcess = exchangeToProcess;
+    public HttpServerExchangeProcessor(HttpExchange httpExchange) {
+        this.httpExchange = httpExchange;
     }
 
     public GatewayModel processExchange() throws IOException {
-        if (exchangeToProcess == null) { return null; }
+        String uri = httpExchange.getRequestURI().getRawPath();
+        System.out.println(uri);
+
+        if (RouteDefinitionStorage.getRouteDefinitionBySourceEndpoint(uri) == null) {
+            throw new RouteDefinitionNotFoundException(
+                    String.format(Constants.SOURCE_ENDPOINT_NOT_FOUND_ERROR_TEMPLATE, uri)
+            );
+        }
+
         return process();
     }
 
     private GatewayModel process() throws IOException {
         String httpMethod = getHttpMethod();
-        Map<String, Deque<String>> queryString = getQueryParamsIfExists();
+        String queryString = getQueryParamsIfExists();
         byte[] requestBody = getRequestBodyIfExists();
         Map<String, String> requestHeaders = getHttpHeaders();
-        String sourceEndpoint = getSourceEndpoint();
 
         return new GatewayModel(
                 httpMethod,
                 requestBody,
                 requestHeaders,
-                queryString,
-                sourceEndpoint
+                queryString
         );
     }
 
     private Map<String, String> getHttpHeaders() {
-        Map<String, String> result = new HashMap<>();
+        Map<String, String> requestHeaders = httpExchange.getRequestHeaders().entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, v -> v.getValue().get(0)));
 
-        exchangeToProcess.getRequestHeaders().forEach(k -> {
-            result.put(k.getHeaderName().toString(), k.element());
-        });
-
-        return result;
+        return requestHeaders;
     }
 
     private byte[] getRequestBodyIfExists() throws IOException {
-        byte[] requestBytes = null;
+        InputStream is = httpExchange.getRequestBody();
 
-        exchangeToProcess.startBlocking();
-        InputStream requestInputStream = exchangeToProcess.getInputStream();
-        if (requestInputStream != null) {
-            requestBytes = requestInputStream.readAllBytes();
-        }
-
-        return requestBytes;
+        return is.readAllBytes();
     }
 
     private String getHttpMethod() {
-        return exchangeToProcess.getRequestMethod().toString();
+        return httpExchange.getRequestMethod();
     }
 
-    private Map<String, Deque<String>> getQueryParamsIfExists() {
-        return exchangeToProcess.getQueryParameters();
-    }
+    private String getQueryParamsIfExists() {
+        String requestUri = httpExchange.getRequestURI().getRawQuery();
 
-    private String getSourceEndpoint() {
-        return exchangeToProcess.getRequestURI();
+        return requestUri;
     }
 }
