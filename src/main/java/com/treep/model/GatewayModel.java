@@ -1,4 +1,4 @@
-package com.treep.handler.processor.model;
+package com.treep.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

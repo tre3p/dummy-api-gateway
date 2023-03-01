@@ -1,4 +1,4 @@
-package com.treep.handler.processor;
+package com.treep.processor;
 
 public class HttpURLConnectionProcessor {
 

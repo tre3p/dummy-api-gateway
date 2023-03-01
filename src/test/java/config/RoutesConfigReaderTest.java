@@ -6,7 +6,7 @@ import com.treep.config.RoutesConfigReader;
 import com.treep.config.model.RouteDefinition;
 import com.treep.config.model.Routes;
 import com.treep.exception.ConfigurationReadingException;
-import com.treep.util.Constants;
+import com.treep.util.ErrorConstants;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -58,7 +58,7 @@ public class RoutesConfigReaderTest {
         assertThrows(
                 ConfigurationReadingException.class,
                 () -> routesConfigReader.readRouteProperties(notExistsConfigPath),
-                Constants.ERROR_CONFIG_READING
+                ErrorConstants.CONFIG_READING_ERROR
         );
     }
 

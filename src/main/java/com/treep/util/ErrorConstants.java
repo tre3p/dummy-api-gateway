@@ -1,4 +1,4 @@
-package com.treep.validator;
+package com.treep.util;
 
 public class ErrorConstants {
 
@@ -17,4 +17,9 @@ public class ErrorConstants {
     public static final String URL_NOT_VALID_ERROR_TEMPLATE = "URL not valid at target-url '%s'";
 
     public static final String REQUEST_TIMEOUT_ERROR = "Request timeout can't be less then zero";
+
+    public static final String CONFIG_READING_ERROR = "Error while reading configuration.";
+
+    public static final String SOURCE_ENDPOINT_NOT_FOUND_ERROR_TEMPLATE =
+            "Source endpoint at '%s' not found";
 }
