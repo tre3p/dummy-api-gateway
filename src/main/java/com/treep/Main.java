@@ -32,30 +32,30 @@ public class Main {
     }
 
     private static void initStorage(String configPath) throws ConfigurationReadingException, RoutesValidationException {
-        log.debug("+initStorage()");
+        log.info("+initStorage()");
         ObjectMapper yamlReaderObjectMapper = new ObjectMapper(new YAMLFactory());
         RoutesConfigReader configReader = new RoutesConfigReader(yamlReaderObjectMapper);
         RoutesValidator routesValidator = new RoutesValidator();
 
-        log.info("initStorage(): reading routes from path: {}", configPath);
+        log.debug("initStorage(): reading routes from path: {}", configPath);
         Routes readedRoutes = configReader.readRouteProperties(configPath);
-        log.info("initStorage(): routes successfully read");
+        log.debug("initStorage(): routes successfully read");
 
-        log.info("initStorage(): validating routes");
+        log.debug("initStorage(): validating routes");
         routesValidator.validateRoutes(readedRoutes);
-        log.info("initStorage(): routes successfully validated");
+        log.debug("initStorage(): routes successfully validated");
 
         Map<String, RouteDefinition> storageReadyRoutes = RoutesConvertor.extractSourceEndpointsToMap(readedRoutes);
         RouteDefinitionStorage.setRouteDefinitionStorage(storageReadyRoutes);
-        log.debug("-initStorage(): storage successfully initiated");
+        log.info("-initStorage(): storage successfully initiated");
     }
 
     private static void launchServer(int port) throws IOException {
-        log.debug("+launchServer(): launching server..");
+        log.info("+launchServer(): launching server..");
         HttpServer s = HttpServer.create(new InetSocketAddress(port), 0);
         s.createContext("/", new ApiGatewayHttpHandler());
         s.start();
-        log.debug("-launchServer(): server successfully initialized at port: {}", port);
+        log.info("-launchServer(): server successfully initialized at port: {}", port);
     }
 }
 

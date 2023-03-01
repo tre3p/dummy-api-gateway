@@ -6,7 +6,7 @@ import com.treep.exception.ConfigurationReadingException;
 import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 
-import static com.treep.util.Constants.ERROR_CONFIG_READING;
+import static com.treep.util.ErrorConstants.CONFIG_READING_ERROR;
 
 @Slf4j
 public class RoutesConfigReader {
@@ -38,7 +38,7 @@ public class RoutesConfigReader {
             gatewayRoutes = objectMapper.readValue(routesConfigFile, Routes.class);
         } catch (Exception e) {
             log.error("-readRouteProperties(): error while reading file ", e);
-            throw new ConfigurationReadingException(ERROR_CONFIG_READING, e);
+            throw new ConfigurationReadingException(CONFIG_READING_ERROR, e);
         }
 
         return gatewayRoutes;

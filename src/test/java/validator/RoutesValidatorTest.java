@@ -10,13 +10,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.treep.validator.ErrorConstants.NULL_FIELD_ERROR_TEMPLATE;
-import static com.treep.validator.ErrorConstants.REQUEST_TIMEOUT_ERROR;
-import static com.treep.validator.ErrorConstants.SOURCE_ENDPOINTS_NOT_UNIQUE_ERROR_TEMPLATE;
-import static com.treep.validator.ErrorConstants.SOURCE_ENDPOINT_FIELD_NAME;
-import static com.treep.validator.ErrorConstants.SOURCE_ENDPOINT_NOT_STARTS_WITH_SLASH_ERROR;
-import static com.treep.validator.ErrorConstants.TARGET_URL_FIELD_NAME;
-import static com.treep.validator.ErrorConstants.URL_NOT_VALID_ERROR_TEMPLATE;
+import static com.treep.util.ErrorConstants.NULL_FIELD_ERROR_TEMPLATE;
+import static com.treep.util.ErrorConstants.REQUEST_TIMEOUT_ERROR;
+import static com.treep.util.ErrorConstants.SOURCE_ENDPOINTS_NOT_UNIQUE_ERROR_TEMPLATE;
+import static com.treep.util.ErrorConstants.SOURCE_ENDPOINT_FIELD_NAME;
+import static com.treep.util.ErrorConstants.SOURCE_ENDPOINT_NOT_STARTS_WITH_SLASH_ERROR;
+import static com.treep.util.ErrorConstants.TARGET_URL_FIELD_NAME;
+import static com.treep.util.ErrorConstants.URL_NOT_VALID_ERROR_TEMPLATE;
 
 public class RoutesValidatorTest {
 
