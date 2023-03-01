@@ -21,7 +21,10 @@ import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import static com.treep.util.HttpConstants.*;
+import static com.treep.util.HttpConstants.APPLICATION_JSON_W_CHARSET;
+import static com.treep.util.HttpConstants.CONTENT_TYPE;
+import static com.treep.util.HttpConstants.PROXYING_MESSAGE_REQUEST_TEMPLATE;
+import static com.treep.util.HttpConstants.PROXYING_MESSAGE_RESPONSE_TEMPLATE;
 
 @Slf4j
 public class ApiGatewayHttpHandler implements HttpHandler {
@@ -92,7 +95,7 @@ public class ApiGatewayHttpHandler implements HttpHandler {
         Map<String, String> responseHeaders = responseDto.getResponseHeaders();
         byte[] responseBody = responseDto.getResponseBody();
 
-        for(Map.Entry<String, String> e : responseHeaders.entrySet()) {
+        for (Map.Entry<String, String> e : responseHeaders.entrySet()) {
             exchange.getResponseHeaders().add(e.getKey(), e.getValue());
         }
 

@@ -23,7 +23,7 @@ public class ErrorConstants {
     public static final String SOURCE_ENDPOINT_NOT_FOUND_ERROR_TEMPLATE =
             "Source endpoint at '%s' not found.";
 
-    public static final String ERROR_BUILDING_REQUEST_MODEL = "Error while building request model.";
+    public static final String ERROR_BUILDING_REQUEST_MODEL = "Error while building request model. %s";
 
     public static final String ERROR_EXECUTING_REQUEST = "Error while executing request.";
 }

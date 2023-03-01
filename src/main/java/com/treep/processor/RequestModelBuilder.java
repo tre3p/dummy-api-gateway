@@ -69,6 +69,10 @@ public class RequestModelBuilder {
             case "POST" -> requestBuilder.POST(HttpRequest.BodyPublishers.ofByteArray(requestBody));
             case "PUT" -> requestBuilder.PUT(HttpRequest.BodyPublishers.ofByteArray(requestBody));
             case "DELETE" -> requestBuilder.DELETE();
+            default -> throw new RequestBuildingException(String.format(
+                    ERROR_BUILDING_REQUEST_MODEL,
+                    "Unsupported HTTP method: ", requestMethod.toUpperCase()
+                    ));
         }
         log.debug("-determineAndInjectRequestMethod()");
     }
