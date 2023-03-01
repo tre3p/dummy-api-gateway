@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class GatewayResponseDto {
+public class GatewaySourceResponseDto {
     private String message;
 }
