@@ -15,7 +15,7 @@ import static com.treep.util.ErrorConstants.ERROR_EXECUTING_REQUEST;
 @Slf4j
 public class RequestExecutor {
 
-    private static final HttpClient client = HttpClient.newBuilder()
+    private static final HttpClient CLIENT = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_1_1)
             .followRedirects(HttpClient.Redirect.NEVER)
             .build();
@@ -25,7 +25,7 @@ public class RequestExecutor {
         HttpResponse<byte[]> response;
 
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+            response = CLIENT.send(request, HttpResponse.BodyHandlers.ofByteArray());
         } catch (Exception e) {
             log.error("-executeRequest(): error while executing request", e);
             String errorMessage = String.format(

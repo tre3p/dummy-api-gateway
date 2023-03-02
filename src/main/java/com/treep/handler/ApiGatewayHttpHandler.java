@@ -30,9 +30,9 @@ import static com.treep.util.HttpConstants.PROXYING_MESSAGE_RESPONSE_TEMPLATE;
 @Slf4j
 public class ApiGatewayHttpHandler implements HttpHandler {
 
-    private static final ObjectMapper om = new ObjectMapper();
+    private static final ObjectMapper OM = new ObjectMapper();
 
-    private final Set<String> RESTRICTED_RESPONSE_HEADERS = Set.of("transfer-encoding");
+    private static final Set<String> RESTRICTED_RESPONSE_HEADERS = Set.of("transfer-encoding");
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -89,7 +89,7 @@ public class ApiGatewayHttpHandler implements HttpHandler {
         log.debug("+prepareErrorMessage()");
         GatewaySourceResponseDto responseDto = new GatewaySourceResponseDto(messageContent);
         log.debug("-prepareErrorMessage()");
-        return om.writeValueAsString(responseDto);
+        return OM.writeValueAsString(responseDto);
     }
 
     private void sendProxyResponse(HttpExchange exchange, GatewayTargetResponseDto responseDto) throws IOException {
@@ -99,7 +99,7 @@ public class ApiGatewayHttpHandler implements HttpHandler {
         byte[] responseBody = responseDto.getResponseBody();
 
         for (Map.Entry<String, String> e : responseHeaders.entrySet()) {
-            if(!RESTRICTED_RESPONSE_HEADERS.contains(e.getKey().toLowerCase())) {
+            if (!RESTRICTED_RESPONSE_HEADERS.contains(e.getKey().toLowerCase())) {
                 exchange.getResponseHeaders().add(e.getKey(), e.getValue());
             }
         }
