@@ -20,6 +20,7 @@ import java.io.OutputStream;
 import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Set;
 
 import static com.treep.util.HttpConstants.APPLICATION_JSON_W_CHARSET;
 import static com.treep.util.HttpConstants.CONTENT_TYPE;
@@ -29,7 +30,9 @@ import static com.treep.util.HttpConstants.PROXYING_MESSAGE_RESPONSE_TEMPLATE;
 @Slf4j
 public class ApiGatewayHttpHandler implements HttpHandler {
 
-    private final ObjectMapper om = new ObjectMapper();
+    private static final ObjectMapper om = new ObjectMapper();
+
+    private final Set<String> RESTRICTED_RESPONSE_HEADERS = Set.of("transfer-encoding");
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -96,7 +99,9 @@ public class ApiGatewayHttpHandler implements HttpHandler {
         byte[] responseBody = responseDto.getResponseBody();
 
         for (Map.Entry<String, String> e : responseHeaders.entrySet()) {
-            exchange.getResponseHeaders().add(e.getKey(), e.getValue());
+            if(!RESTRICTED_RESPONSE_HEADERS.contains(e.getKey().toLowerCase())) {
+                exchange.getResponseHeaders().add(e.getKey(), e.getValue());
+            }
         }
 
         if (responseBody == null) {

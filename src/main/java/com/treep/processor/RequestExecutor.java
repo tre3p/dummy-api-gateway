@@ -7,7 +7,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ import static com.treep.util.ErrorConstants.ERROR_EXECUTING_REQUEST;
 @Slf4j
 public class RequestExecutor {
 
-    private static HttpClient client = HttpClient.newBuilder()
+    private static final HttpClient client = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_1_1)
             .followRedirects(HttpClient.Redirect.NEVER)
             .build();
@@ -29,7 +28,11 @@ public class RequestExecutor {
             response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
         } catch (Exception e) {
             log.error("-executeRequest(): error while executing request", e);
-            throw new RequestExecutionException(ERROR_EXECUTING_REQUEST, e);
+            String errorMessage = String.format(
+                    ERROR_EXECUTING_REQUEST,
+                    e.getMessage() == null ? "service unavailable" : e.getMessage()
+            );
+            throw new RequestExecutionException(errorMessage, e);
         }
 
         GatewayTargetResponseDto responseDto = processResponse(response);
@@ -40,15 +43,12 @@ public class RequestExecutor {
     private static GatewayTargetResponseDto processResponse(HttpResponse<byte[]> response) {
         log.debug("+processResponse()");
         Map<String, String> responseHeaders = convertHeaders(response.headers());
-        System.out.println(responseHeaders);
         int responseStatus = response.statusCode();
         byte[] responseBody = null;
 
         if (response.body() != null) {
             responseBody = response.body();
         }
-
-        System.out.println(new String(responseBody, StandardCharsets.UTF_8));
 
         GatewayTargetResponseDto responseDto = new GatewayTargetResponseDto();
         responseDto.setResponseHeaders(responseHeaders);

@@ -71,7 +71,7 @@ public class RequestModelBuilder {
             case "DELETE" -> requestBuilder.DELETE();
             default -> throw new RequestBuildingException(String.format(
                     ERROR_BUILDING_REQUEST_MODEL,
-                    "Unsupported HTTP method: ", requestMethod.toUpperCase()
+                    "Unsupported HTTP method: " + requestMethod.toUpperCase()
                     ));
         }
         log.debug("-determineAndInjectRequestMethod()");
