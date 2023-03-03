@@ -6,4 +6,4 @@ public record GatewayTargetResponseDto(
         int httpStatusCode,
         byte[] responseBody,
         Map<String, String> responseHeaders
-) {}
+ ) { }

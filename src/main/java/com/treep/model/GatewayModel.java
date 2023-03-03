@@ -9,4 +9,4 @@ public record GatewayModel(
         String targetQueryParams,
         String targetHost,
         int requestTimeout
-) {}
+ ) { }
