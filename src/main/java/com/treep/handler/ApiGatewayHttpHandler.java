@@ -62,7 +62,7 @@ public class ApiGatewayHttpHandler implements HttpHandler {
             return;
         }
 
-        LoggerUtils.logProxyingRequestResult(responseDto.getHttpStatusCode());
+        LoggerUtils.logProxyingRequestResult(responseDto.httpStatusCode());
 
         sendProxyResponse(exchange, responseDto);
         log.debug("-handle()");
@@ -93,9 +93,9 @@ public class ApiGatewayHttpHandler implements HttpHandler {
 
     private void sendProxyResponse(HttpExchange exchange, GatewayTargetResponseDto responseDto) throws IOException {
         log.debug("+sendProxyResponse()");
-        int statusCode = responseDto.getHttpStatusCode();
-        Map<String, String> responseHeaders = responseDto.getResponseHeaders();
-        byte[] responseBody = responseDto.getResponseBody();
+        int statusCode = responseDto.httpStatusCode();
+        Map<String, String> responseHeaders = responseDto.responseHeaders();
+        byte[] responseBody = responseDto.responseBody();
 
         for (Map.Entry<String, String> e : responseHeaders.entrySet()) {
             if (!RESTRICTED_RESPONSE_HEADERS.contains(e.getKey().toLowerCase())) {

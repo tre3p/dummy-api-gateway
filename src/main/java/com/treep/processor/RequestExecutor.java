@@ -42,7 +42,7 @@ public class RequestExecutor {
 
     private static GatewayTargetResponseDto processResponse(HttpResponse<byte[]> response) {
         log.debug("+processResponse()");
-        Map<String, String> responseHeaders = convertHeaders(response.headers());
+        Map<String, String> responseHeaders = convertHeadersToMap(response.headers());
         int responseStatus = response.statusCode();
         byte[] responseBody = null;
 
@@ -50,16 +50,17 @@ public class RequestExecutor {
             responseBody = response.body();
         }
 
-        GatewayTargetResponseDto responseDto = new GatewayTargetResponseDto();
-        responseDto.setResponseHeaders(responseHeaders);
-        responseDto.setHttpStatusCode(responseStatus);
-        responseDto.setResponseBody(responseBody);
+        GatewayTargetResponseDto responseDto = new GatewayTargetResponseDto(
+                responseStatus,
+                responseBody,
+                responseHeaders
+        );
 
         log.debug("-processResponse()");
         return responseDto;
     }
 
-    private static Map<String, String> convertHeaders(HttpHeaders headers) {
+    private static Map<String, String> convertHeadersToMap(HttpHeaders headers) {
         log.debug("+convertHeaders()");
         Map<String, String> result = new HashMap<>();
 
