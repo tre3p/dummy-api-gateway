@@ -6,7 +6,7 @@ import com.sun.net.httpserver.HttpServer;
 import com.treep.config.RoutesConfigReader;
 import com.treep.config.model.RouteDefinition;
 import com.treep.config.model.Routes;
-import com.treep.convertor.RoutesConvertor;
+import com.treep.converter.RoutesConverter;
 import com.treep.exception.ConfigurationReadingException;
 import com.treep.exception.RoutesValidationException;
 import com.treep.handler.ApiGatewayHttpHandler;
@@ -45,7 +45,7 @@ public class Main {
         routesValidator.validateRoutes(readedRoutes);
         log.debug("initStorage(): routes successfully validated");
 
-        Map<String, RouteDefinition> storageReadyRoutes = RoutesConvertor.extractSourceEndpointsToMap(readedRoutes);
+        Map<String, RouteDefinition> storageReadyRoutes = RoutesConverter.extractSourceEndpointsToMap(readedRoutes);
         RouteDefinitionStorage.setRouteDefinitionStorage(storageReadyRoutes);
         log.info("-initStorage(): storage successfully initiated");
     }
