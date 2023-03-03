@@ -25,5 +25,5 @@ public class ErrorConstants {
 
     public static final String ERROR_BUILDING_REQUEST_MODEL = "Error while building request model. %s";
 
-    public static final String ERROR_EXECUTING_REQUEST = "Error while executing request.";
+    public static final String ERROR_EXECUTING_REQUEST = "Error while executing request. Cause: %s";
 }

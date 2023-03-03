@@ -19,9 +19,9 @@ public class RequestModelBuilder {
     public static HttpRequest buildHttpRequestModel(GatewayModel requestModel) {
         log.debug("+buildRequestModel()");
         String url = buildUrl(requestModel);
-        Map<String, String> requestHeaders = requestModel.getRequestHeaders();
-        byte[] requestBody = requestModel.getRequestBody();
-        int requestTimeout = requestModel.getRequestTimeout();
+        Map<String, String> requestHeaders = requestModel.requestHeaders();
+        byte[] requestBody = requestModel.requestBody();
+        int requestTimeout = requestModel.requestTimeout();
         URI builtUrl;
 
         try {
@@ -34,7 +34,7 @@ public class RequestModelBuilder {
         HttpRequest.Builder req = HttpRequest.newBuilder();
         req.uri(builtUrl);
         injectHeader(requestHeaders, req);
-        determineAndInjectRequestMethod(req, requestModel.getHttpMethod(), requestBody);
+        determineAndInjectRequestMethod(req, requestModel.httpMethod(), requestBody);
         injectTimeout(req, requestTimeout);
 
         HttpRequest builtRequest = req.build();
@@ -49,10 +49,10 @@ public class RequestModelBuilder {
 
     private static String buildUrl(GatewayModel requestModel) {
         log.debug("+buildUrl()");
-        String host = requestModel.getTargetHost();
+        String host = requestModel.targetHost();
 
-        if (requestModel.getTargetQueryParams() != null && !requestModel.getTargetQueryParams().isEmpty()) {
-            host += "?" + requestModel.getTargetQueryParams();
+        if (requestModel.targetQueryParams() != null && !requestModel.targetQueryParams().isEmpty()) {
+            host += "?" + requestModel.targetQueryParams();
         }
 
         log.debug("-buildUrl()");
@@ -71,7 +71,7 @@ public class RequestModelBuilder {
             case "DELETE" -> requestBuilder.DELETE();
             default -> throw new RequestBuildingException(String.format(
                     ERROR_BUILDING_REQUEST_MODEL,
-                    "Unsupported HTTP method: ", requestMethod.toUpperCase()
+                    "Unsupported HTTP method: " + requestMethod.toUpperCase()
                     ));
         }
         log.debug("-determineAndInjectRequestMethod()");
