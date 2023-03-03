@@ -1,4 +1,4 @@
-package com.treep.convertor;
+package com.treep.converter;
 
 import com.treep.config.model.RouteDefinition;
 import com.treep.config.model.Routes;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public class RoutesConvertor {
+public class RoutesConverter {
 
     /**
      * Creates Map<String, RouteDefinition> from {@link Routes} passed in method, where key is 'source-endpoint',
