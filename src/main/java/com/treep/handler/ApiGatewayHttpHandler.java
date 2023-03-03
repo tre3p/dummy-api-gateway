@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import com.treep.exception.RequestBuildingException;
 import com.treep.exception.RequestExecutionException;
 import com.treep.exception.RouteDefinitionNotFoundException;
 import com.treep.model.GatewaySourceResponseDto;
@@ -13,6 +14,7 @@ import com.treep.model.GatewayModel;
 import com.treep.processor.RequestModelBuilder;
 import com.treep.processor.RequestExecutor;
 import com.treep.util.HttpConstants;
+import com.treep.util.LoggerUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -24,46 +26,43 @@ import java.util.Set;
 
 import static com.treep.util.HttpConstants.APPLICATION_JSON_W_CHARSET;
 import static com.treep.util.HttpConstants.CONTENT_TYPE;
-import static com.treep.util.HttpConstants.PROXYING_MESSAGE_REQUEST_TEMPLATE;
-import static com.treep.util.HttpConstants.PROXYING_MESSAGE_RESPONSE_TEMPLATE;
 
 @Slf4j
 public class ApiGatewayHttpHandler implements HttpHandler {
 
     private static final ObjectMapper OM = new ObjectMapper();
 
+    /**
+     * Restricted headers for HTTP response
+     * TODO: describe
+     */
     private static final Set<String> RESTRICTED_RESPONSE_HEADERS = Set.of("transfer-encoding");
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         log.debug("+handle()");
         GatewayModel gatewayModel;
+        HttpRequest targetRequest;
+        GatewayTargetResponseDto responseDto;
 
         try {
             gatewayModel = GatewayModelBuilder.processExchange(exchange);
-        } catch (RouteDefinitionNotFoundException e) {
+            targetRequest = RequestModelBuilder.buildHttpRequestModel(gatewayModel);
+
+            LoggerUtils.logProxyingRequest(
+                    targetRequest.method(),
+                    exchange.getRequestURI().getRawPath(),
+                    targetRequest.uri()
+            );
+
+            responseDto = RequestExecutor.executeRequest(targetRequest);
+        } catch (RouteDefinitionNotFoundException | RequestBuildingException | RequestExecutionException e) {
             handleProblemWhileRequestExecution(exchange, e.getMessage());
             log.error("-handle(): error while handling request", e);
             return;
         }
 
-        HttpRequest targetRequest = RequestModelBuilder.buildHttpRequestModel(gatewayModel);
-        log.info(String.format(
-                PROXYING_MESSAGE_REQUEST_TEMPLATE,
-                targetRequest.method(),
-                exchange.getRequestURI().getRawPath(),
-                targetRequest.uri()
-                ));
-
-        GatewayTargetResponseDto responseDto;
-        try {
-            responseDto = RequestExecutor.executeRequest(targetRequest);
-        } catch (RequestExecutionException e) {
-            handleProblemWhileRequestExecution(exchange, e.getMessage());
-            return;
-        }
-
-        log.info(String.format(PROXYING_MESSAGE_RESPONSE_TEMPLATE, responseDto.getHttpStatusCode()));
+        LoggerUtils.logProxyingRequestResult(responseDto.getHttpStatusCode());
 
         sendProxyResponse(exchange, responseDto);
         log.debug("-handle()");
