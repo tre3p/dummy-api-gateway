@@ -1,4 +1,4 @@
-package com.treep.util;
+package com.treep.util.constants;
 
 public class ErrorConstants {
 

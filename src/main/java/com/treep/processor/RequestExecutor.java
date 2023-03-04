@@ -10,7 +10,7 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.treep.util.ErrorConstants.ERROR_EXECUTING_REQUEST;
+import static com.treep.util.constants.ErrorConstants.ERROR_EXECUTING_REQUEST;
 
 @Slf4j
 public class RequestExecutor {

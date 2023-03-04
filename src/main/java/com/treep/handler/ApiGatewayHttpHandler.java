@@ -13,7 +13,7 @@ import com.treep.processor.GatewayModelBuilder;
 import com.treep.model.GatewayModel;
 import com.treep.processor.RequestModelBuilder;
 import com.treep.processor.RequestExecutor;
-import com.treep.util.HttpConstants;
+import com.treep.util.constants.HttpConstants;
 import com.treep.util.LoggerUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,8 +24,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 
-import static com.treep.util.HttpConstants.APPLICATION_JSON_W_CHARSET;
-import static com.treep.util.HttpConstants.CONTENT_TYPE;
+import static com.treep.util.constants.HttpConstants.APPLICATION_JSON_W_CHARSET;
+import static com.treep.util.constants.HttpConstants.CONTENT_TYPE;
 
 @Slf4j
 public class ApiGatewayHttpHandler implements HttpHandler {

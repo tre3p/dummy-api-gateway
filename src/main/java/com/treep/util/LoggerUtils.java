@@ -4,11 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
 
-import static com.treep.util.HttpConstants.PROXYING_MESSAGE_REQUEST_TEMPLATE;
-import static com.treep.util.HttpConstants.PROXYING_MESSAGE_RESPONSE_TEMPLATE;
-
 @Slf4j
 public class LoggerUtils {
+
+    public static final String PROXYING_MESSAGE_REQUEST_TEMPLATE = "Proxying %s (%s) -> (%s)";
+
+    public static final String PROXYING_MESSAGE_RESPONSE_TEMPLATE = "Response: %s";
 
     public static void logProxyingRequest(String requestMethod, String sourceEndpoint, URI targetUrl) {
         log.info(String.format(

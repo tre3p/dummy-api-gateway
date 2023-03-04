@@ -11,7 +11,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
-import static com.treep.util.ErrorConstants.ERROR_BUILDING_REQUEST_MODEL;
+import static com.treep.util.constants.ErrorConstants.ERROR_BUILDING_REQUEST_MODEL;
 
 @Slf4j
 public class RequestModelBuilder {

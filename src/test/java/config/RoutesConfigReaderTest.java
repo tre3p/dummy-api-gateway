@@ -6,7 +6,7 @@ import com.treep.config.RoutesConfigReader;
 import com.treep.config.model.RouteDefinition;
 import com.treep.config.model.Routes;
 import com.treep.exception.ConfigurationReadingException;
-import com.treep.util.ErrorConstants;
+import com.treep.util.constants.ErrorConstants;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
