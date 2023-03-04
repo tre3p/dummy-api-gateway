@@ -5,7 +5,7 @@ import com.treep.config.model.RouteDefinition;
 import com.treep.exception.RouteDefinitionNotFoundException;
 import com.treep.model.GatewayModel;
 import com.treep.storage.RouteDefinitionStorage;
-import com.treep.util.ErrorConstants;
+import com.treep.util.constants.ErrorConstants;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

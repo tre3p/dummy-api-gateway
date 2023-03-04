@@ -12,13 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import static com.treep.util.ErrorConstants.NULL_FIELD_ERROR_TEMPLATE;
-import static com.treep.util.ErrorConstants.REQUEST_TIMEOUT_ERROR;
-import static com.treep.util.ErrorConstants.SOURCE_ENDPOINTS_NOT_UNIQUE_ERROR_TEMPLATE;
-import static com.treep.util.ErrorConstants.SOURCE_ENDPOINT_FIELD_NAME;
-import static com.treep.util.ErrorConstants.SOURCE_ENDPOINT_NOT_STARTS_WITH_SLASH_ERROR;
-import static com.treep.util.ErrorConstants.TARGET_URL_FIELD_NAME;
-import static com.treep.util.ErrorConstants.URL_NOT_VALID_ERROR_TEMPLATE;
+import static com.treep.util.constants.ErrorConstants.NULL_FIELD_ERROR_TEMPLATE;
+import static com.treep.util.constants.ErrorConstants.REQUEST_TIMEOUT_ERROR;
+import static com.treep.util.constants.ErrorConstants.SOURCE_ENDPOINTS_NOT_UNIQUE_ERROR_TEMPLATE;
+import static com.treep.util.constants.ErrorConstants.SOURCE_ENDPOINT_FIELD_NAME;
+import static com.treep.util.constants.ErrorConstants.SOURCE_ENDPOINT_NOT_STARTS_WITH_SLASH_ERROR;
+import static com.treep.util.constants.ErrorConstants.TARGET_URL_FIELD_NAME;
+import static com.treep.util.constants.ErrorConstants.URL_NOT_VALID_ERROR_TEMPLATE;
 
 @Slf4j
 public class RoutesValidator {

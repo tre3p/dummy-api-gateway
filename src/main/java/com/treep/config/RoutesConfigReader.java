@@ -6,7 +6,7 @@ import com.treep.exception.ConfigurationReadingException;
 import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 
-import static com.treep.util.ErrorConstants.CONFIG_READING_ERROR;
+import static com.treep.util.constants.ErrorConstants.CONFIG_READING_ERROR;
 
 @Slf4j
 public class RoutesConfigReader {
