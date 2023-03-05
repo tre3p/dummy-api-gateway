@@ -1,4 +1,4 @@
-package com.treep.processor;
+package com.treep.executor;
 
 import com.treep.exception.RequestExecutionException;
 import com.treep.model.GatewayTargetResponseDto;

@@ -9,10 +9,10 @@ import com.treep.exception.RequestExecutionException;
 import com.treep.exception.RouteDefinitionNotFoundException;
 import com.treep.model.GatewaySourceResponseDto;
 import com.treep.model.GatewayTargetResponseDto;
-import com.treep.processor.GatewayModelBuilder;
+import com.treep.builder.GatewayModelBuilder;
 import com.treep.model.GatewayModel;
-import com.treep.processor.RequestModelBuilder;
-import com.treep.processor.RequestExecutor;
+import com.treep.builder.RequestModelBuilder;
+import com.treep.executor.RequestExecutor;
 import com.treep.util.constants.HttpConstants;
 import com.treep.util.LoggerUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,7 @@ public class ApiGatewayHttpHandler implements HttpHandler {
         GatewayTargetResponseDto responseDto;
 
         try {
-            gatewayModel = GatewayModelBuilder.processExchange(exchange);
+            gatewayModel = GatewayModelBuilder.buildGatewayModel(exchange);
             targetRequest = RequestModelBuilder.buildHttpRequestModel(gatewayModel);
 
             LoggerUtils.logProxyingRequest(

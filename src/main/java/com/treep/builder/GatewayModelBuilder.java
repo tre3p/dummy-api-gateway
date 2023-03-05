@@ -1,4 +1,4 @@
-package com.treep.processor;
+package com.treep.builder;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.treep.config.model.RouteDefinition;
@@ -28,7 +28,7 @@ public class GatewayModelBuilder {
             "upgrade"
     );
 
-    public static GatewayModel processExchange(HttpExchange httpExchange) throws IOException {
+    public static GatewayModel buildGatewayModel(HttpExchange httpExchange) throws IOException {
         log.debug("+processExchange()");
         String uri = httpExchange.getRequestURI().getRawPath();
         RouteDefinition routeDefinition = RouteDefinitionStorage.getRouteDefinitionBySourceEndpoint(uri);

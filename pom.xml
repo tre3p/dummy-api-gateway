@@ -37,13 +37,6 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.14.2</version>
         </dependency>
-        <!--Tests libraries-->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.2</version>
-            <scope>test</scope>
-        </dependency>
         <!--Annotation boilerplate terminator-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -56,6 +49,20 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.4.5</version>
+        </dependency>
+        <!--Tests libraries-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- JUnit extensions to set environment variables in tests -->
+        <dependency>
+            <groupId>org.junit-pioneer</groupId>
+            <artifactId>junit-pioneer</artifactId>
+            <version>2.0.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -85,6 +92,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M9</version>
+                <configuration>
+                    <argLine>
+                        --add-opens java.base/java.util=ALL-UNNAMED
+                        --add-opens java.base/java.lang=ALL-UNNAMED
+                    </argLine>
+                </configuration>
             </plugin>
 
         </plugins>

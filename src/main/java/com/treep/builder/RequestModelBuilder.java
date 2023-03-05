@@ -1,4 +1,4 @@
-package com.treep.processor;
+package com.treep.builder;
 
 import com.treep.exception.RequestBuildingException;
 import com.treep.model.GatewayModel;

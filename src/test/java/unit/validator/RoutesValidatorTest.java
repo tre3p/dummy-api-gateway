@@ -1,4 +1,4 @@
-package validator;
+package unit.validator;
 
 import com.treep.config.model.RouteDefinition;
 import com.treep.config.model.Routes;
