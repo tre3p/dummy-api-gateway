@@ -4,19 +4,13 @@ import com.treep.config.model.RouteDefinition;
 import com.treep.config.model.Routes;
 import com.treep.exception.RoutesValidationException;
 import com.treep.validator.RoutesValidator;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.treep.util.constants.ErrorConstants.NULL_FIELD_ERROR_TEMPLATE;
-import static com.treep.util.constants.ErrorConstants.REQUEST_TIMEOUT_ERROR;
-import static com.treep.util.constants.ErrorConstants.SOURCE_ENDPOINTS_NOT_UNIQUE_ERROR_TEMPLATE;
-import static com.treep.util.constants.ErrorConstants.SOURCE_ENDPOINT_FIELD_NAME;
-import static com.treep.util.constants.ErrorConstants.SOURCE_ENDPOINT_NOT_STARTS_WITH_SLASH_ERROR;
-import static com.treep.util.constants.ErrorConstants.TARGET_URL_FIELD_NAME;
-import static com.treep.util.constants.ErrorConstants.URL_NOT_VALID_ERROR_TEMPLATE;
+import static com.treep.util.constants.ErrorConstants.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RoutesValidatorTest {
 
@@ -47,11 +41,11 @@ public class RoutesValidatorTest {
                 SOURCE_ENDPOINT_FIELD_NAME
         );
 
-        var actualExceptionMessage = Assertions.assertThrowsExactly(
+        var actualExceptionMessage = assertThrowsExactly(
                 RoutesValidationException.class,
                 () -> routesValidator.validateRoutes(testRoutes)
         ).getMessage();
-        Assertions.assertEquals(expectedMessage, actualExceptionMessage);
+        assertEquals(expectedMessage, actualExceptionMessage);
     }
 
     @Test
@@ -62,12 +56,12 @@ public class RoutesValidatorTest {
                 TARGET_URL_FIELD_NAME
         );
 
-        var actualExceptionMessage = Assertions.assertThrows(
+        var actualExceptionMessage = assertThrows(
                 RoutesValidationException.class,
                 () -> routesValidator.validateRoutes(testRoutes)
         ).getMessage();
 
-        Assertions.assertEquals(expectedMessage, actualExceptionMessage);
+        assertEquals(expectedMessage, actualExceptionMessage);
     }
 
     @Test
@@ -78,24 +72,24 @@ public class RoutesValidatorTest {
                 testRoutes.getRoutes().get(0).getTargetUrl()
         );
 
-        var actualExceptionMessage = Assertions.assertThrows(
+        var actualExceptionMessage = assertThrows(
                 RoutesValidationException.class,
                 () -> routesValidator.validateRoutes(testRoutes)
         ).getMessage();
 
-        Assertions.assertEquals(expectedMessage, actualExceptionMessage);
+        assertEquals(expectedMessage, actualExceptionMessage);
     }
 
     @Test
     void shouldThrowAndReturnCorrectMessageOnNegativeRequestTimeout() {
         testRoutes.getRoutes().get(0).setRequestTimeout(-2);
 
-        var actualExceptionMessage = Assertions.assertThrows(
+        var actualExceptionMessage = assertThrows(
                 RoutesValidationException.class,
                 () -> routesValidator.validateRoutes(testRoutes)
         ).getMessage();
 
-        Assertions.assertEquals(REQUEST_TIMEOUT_ERROR, actualExceptionMessage);
+        assertEquals(REQUEST_TIMEOUT_ERROR, actualExceptionMessage);
     }
 
     @Test
@@ -106,12 +100,12 @@ public class RoutesValidatorTest {
                 testRoutes.getRoutes().get(0).getSourceEndpoint()
         );
 
-        var actualExceptionMessage = Assertions.assertThrows(
+        var actualExceptionMessage = assertThrows(
                 RoutesValidationException.class,
                 () -> routesValidator.validateRoutes(testRoutes)
         ).getMessage();
 
-        Assertions.assertEquals(expectedMessage, actualExceptionMessage);
+        assertEquals(expectedMessage, actualExceptionMessage);
     }
 
     @Test
@@ -134,17 +128,17 @@ public class RoutesValidatorTest {
                 routeDefinition.getSourceEndpoint()
         );
 
-        var actualExceptionMessage = Assertions.assertThrows(
+        var actualExceptionMessage = assertThrows(
                 RoutesValidationException.class,
                 () -> routesValidator.validateRoutes(testRoutes)
         ).getMessage();
 
-        Assertions.assertEquals(expectedMessage, actualExceptionMessage);
+        assertEquals(expectedMessage, actualExceptionMessage);
     }
 
     @Test
     void shouldNotThrowOnCorrectConfig() {
-        Assertions.assertDoesNotThrow(
+        assertDoesNotThrow(
                 () -> routesValidator.validateRoutes(testRoutes)
         );
     }
