@@ -1,6 +1,6 @@
 routes:
-  - target-url: http://localhost:8080
-    source-endpoint: /sample-endpoint
+  - target-url: http://localhost:5050/test
+    source-endpoint: /source-endpoint
     request-timeout: 10
   - target-url: http://localhost:8080
     source-endpoint: /sample-url

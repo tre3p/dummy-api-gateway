@@ -3,9 +3,11 @@ package unit.config;
 import com.treep.config.GatewayConfigReader;
 import com.treep.config.model.GatewayConfig;
 import com.treep.util.constants.ConfigConstants;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.SetEnvironmentVariable;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class GatewayConfigReaderTest {
 
@@ -17,8 +19,8 @@ public class GatewayConfigReaderTest {
     void shouldCorrectlySetDefaultsOnNoEnv() {
         GatewayConfig gatewayConfig = GatewayConfigReader.readEnv();
 
-        Assertions.assertEquals(ConfigConstants.DEFAULT_SERVER_PORT, gatewayConfig.getServerPort());
-        Assertions.assertEquals(ConfigConstants.DEFAULT_GATEWAY_CONFIG_LOCATION, gatewayConfig.getConfigLocation());
+        assertEquals(ConfigConstants.DEFAULT_SERVER_PORT, gatewayConfig.getServerPort());
+        assertEquals(ConfigConstants.DEFAULT_GATEWAY_CONFIG_LOCATION, gatewayConfig.getConfigLocation());
     }
 
     @Test
@@ -26,7 +28,7 @@ public class GatewayConfigReaderTest {
     void shouldCorrectlyReadPortFromEnv() {
         GatewayConfig actualConfig = GatewayConfigReader.readEnv();
 
-        Assertions.assertEquals(Integer.parseInt(EXPECTED_PORT), actualConfig.getServerPort());
+        assertEquals(Integer.parseInt(EXPECTED_PORT), actualConfig.getServerPort());
     }
 
     @Test
@@ -34,18 +36,18 @@ public class GatewayConfigReaderTest {
     void shouldCorrectlyReadFileLocationFromEnv() {
         GatewayConfig actualConfig = GatewayConfigReader.readEnv();
 
-        Assertions.assertEquals(EXPECTED_CONFIG_FILE_NAME, actualConfig.getConfigLocation());
+        assertEquals(EXPECTED_CONFIG_FILE_NAME, actualConfig.getConfigLocation());
     }
 
     @Test
     @SetEnvironmentVariable.SetEnvironmentVariables({
             @SetEnvironmentVariable(key = ConfigConstants.GATEWAY_CONFIG_LOCATION_ENV, value = EXPECTED_CONFIG_FILE_NAME),
-            @SetEnvironmentVariable(key =  ConfigConstants.SERVER_PORT_ENV, value = EXPECTED_PORT)
+            @SetEnvironmentVariable(key = ConfigConstants.SERVER_PORT_ENV, value = EXPECTED_PORT)
     })
     void shouldCorrectlyReadServerPortAndFileNameFromEnv() {
         GatewayConfig actualConfig = GatewayConfigReader.readEnv();
 
-        Assertions.assertEquals(EXPECTED_CONFIG_FILE_NAME, actualConfig.getConfigLocation());
-        Assertions.assertEquals(Integer.parseInt(EXPECTED_PORT), actualConfig.getServerPort());
+        assertEquals(EXPECTED_CONFIG_FILE_NAME, actualConfig.getConfigLocation());
+        assertEquals(Integer.parseInt(EXPECTED_PORT), actualConfig.getServerPort());
     }
 }
