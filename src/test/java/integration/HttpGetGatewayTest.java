@@ -1,13 +1,7 @@
 package integration;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import com.treep.exception.ConfigurationReadingException;
-import com.treep.exception.RoutesValidationException;
-import com.treep.util.constants.ConfigConstants;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junitpioneer.jupiter.SetEnvironmentVariable;
 import util.Utils;
 import java.io.IOException;
 import java.net.URI;
@@ -24,36 +18,19 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static util.Utils.TEST_GATEWAY_CONFIG_PATH;
+import static util.TestConstants.TEST_JSON_STUB;
+import static util.TestConstants.TEST_SOURCE_URL;
+import static util.TestConstants.TEST_TARGET_ENDPOINT;
 import static util.Utils.executeRequest;
 
-@SetEnvironmentVariable.SetEnvironmentVariables({
-        @SetEnvironmentVariable(key = ConfigConstants.GATEWAY_CONFIG_LOCATION_ENV, value = TEST_GATEWAY_CONFIG_PATH)
-})
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @WireMockTest(httpPort = 5050)
-public class HttpGetGatewayTest {
-
-    private static final String TEST_SOURCE_URL = "http://localhost:8080/source-endpoint";
+public class HttpGetGatewayTest extends WiremockAbstractTest {
 
     private static final String TEST_QUERY_PARAM = "?foo=bar&bar=baz";
-
-    private static final String TEST_TARGET_ENDPOINT = "/test";
 
     private static final String TEST_HEADER_KEY = "X-Custom-Header";
 
     private static final String TEST_HEADER_VALUE = "FooBarBaz";
-
-    private static final String TEST_JSON_STUB = """
-            {
-                "foo": "bar"
-            }
-            """;
-
-    @BeforeAll
-    void beforeAll() throws ConfigurationReadingException, RoutesValidationException, IOException {
-        Utils.startServer();
-    }
 
     @Test
     void shouldCorrectlyProxyDefaultGetRequestToTargetUrl()
