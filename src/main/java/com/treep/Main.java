@@ -31,7 +31,8 @@ public class Main {
 
         ObjectMapper yamlFormattedObjectMapper = new ObjectMapper(new YAMLFactory());
         Routes configRoutes = readRoutesFromConfigFile(gwConfig.getConfigLocation(), yamlFormattedObjectMapper);
-        validateRoutes(configRoutes);
+        RoutesValidator validator = new RoutesValidator();
+        validateRoutes(configRoutes, validator);
         initStorage(configRoutes);
 
         ApiGatewayHttpHandler gatewayHttpHandler = new ApiGatewayHttpHandler();
@@ -46,9 +47,9 @@ public class Main {
         return readRoutes;
     }
 
-    private static void validateRoutes(Routes routesToValidate) throws RoutesValidationException {
+    private static void validateRoutes(Routes routesToValidate, RoutesValidator validator) throws RoutesValidationException {
         log.debug("+validateRoutes()");
-        RoutesValidator.validateRoutes(routesToValidate);
+        validator.validateRoutes(routesToValidate);
         log.debug("-validateRoutes()");
     }
 
