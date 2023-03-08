@@ -99,6 +99,27 @@ public class HttpGetGatewayTest extends WiremockAbstractTest {
         assertEquals(TEST_HEADER_VALUE, actualHeaderValue);
     }
 
+    @Test
+    void shouldReturn() throws URISyntaxException, IOException, InterruptedException {
+        configureStubForResponseAfter10SecondsTimeout();
+
+        HttpRequest req = HttpRequest.newBuilder()
+                .uri(new URI(TEST_SOURCE_URL))
+                .GET()
+                .build();
+
+        HttpResponse<byte[]> resp = Utils.executeRequest(req);
+
+        assertEquals(400, resp.statusCode());
+    }
+
+    private void configureStubForResponseAfter10SecondsTimeout() {
+        stubFor(
+                get(urlEqualTo(TEST_TARGET_ENDPOINT))
+                        .willReturn(aResponse().withStatus(200).withFixedDelay(10000))
+        );
+    }
+
     private void configureStubForResponseContainsCustomHeaders() {
         stubFor(
                 get(urlEqualTo(TEST_TARGET_ENDPOINT))
