@@ -23,9 +23,9 @@ import static com.treep.util.constants.ErrorConstants.URL_NOT_VALID_ERROR_TEMPLA
 @Slf4j
 public class RoutesValidator {
 
-    private String errorMessage;
+    private static String errorMessage;
 
-    public void validateRoutes(Routes routes) throws RoutesValidationException {
+    public static void validateRoutes(Routes routes) throws RoutesValidationException {
         log.debug("+validateRoutes(): validation {} routes", routes.getRoutes().size());
         Predicate<RouteDefinition> predicateChain = buildPredicateChain();
 
@@ -37,7 +37,7 @@ public class RoutesValidator {
         log.debug("-validateRoutes()");
     }
 
-    private Predicate<RouteDefinition> buildPredicateChain() {
+    private static Predicate<RouteDefinition> buildPredicateChain() {
         log.debug("buildPredicateChain()");
         return isMinOccurredFieldsNotNullOrEmpty
                 .and(isSourceEndpointValid)
@@ -49,7 +49,7 @@ public class RoutesValidator {
     /**
      * Checks that all necessary fields in {@link Routes} are not null and not empty.
      */
-    private final Predicate<RouteDefinition> isMinOccurredFieldsNotNullOrEmpty = new Predicate<>() {
+    private static final Predicate<RouteDefinition> isMinOccurredFieldsNotNullOrEmpty = new Predicate<>() {
         @Override
         public boolean test(RouteDefinition r) {
             log.debug("+isMinOccurredFieldsNotNullOrEmpty()");
@@ -73,7 +73,7 @@ public class RoutesValidator {
     /**
      * Checks if {@link Routes} contains non-unique 'source-endpoint' field
      */
-    private final Predicate<RouteDefinition> isSourceEndpointUnique = new Predicate<>() {
+    private static final Predicate<RouteDefinition> isSourceEndpointUnique = new Predicate<>() {
 
         private final Set<String> seenSourceEndpoints = new HashSet<>();
 
@@ -98,7 +98,7 @@ public class RoutesValidator {
     /**
      * Checks that URL passed in {@link Routes} is valid URL
      */
-    private final Predicate<RouteDefinition> isTargetUrlValid = new Predicate<>() {
+    private static final Predicate<RouteDefinition> isTargetUrlValid = new Predicate<>() {
         @Override
         public boolean test(RouteDefinition r) {
             log.debug("+isTargetUrlValid()");
@@ -120,7 +120,7 @@ public class RoutesValidator {
     /**
      * Checks that request timeout is not negative
      */
-    private final Predicate<RouteDefinition> isRequestTimeoutValid = new Predicate<>() {
+    private static final Predicate<RouteDefinition> isRequestTimeoutValid = new Predicate<>() {
         @Override
         public boolean test(RouteDefinition r) {
             log.debug("+isRequestTimeoutValid()");
@@ -136,7 +136,7 @@ public class RoutesValidator {
         }
     };
 
-    private final Predicate<RouteDefinition> isSourceEndpointValid = routeDefinition -> {
+    private static final Predicate<RouteDefinition> isSourceEndpointValid = routeDefinition -> {
         log.debug("+isSourceEndpointValid()");
         String sourceEndpoint = routeDefinition.getSourceEndpoint();
         boolean result = true;

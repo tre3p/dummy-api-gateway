@@ -2,6 +2,7 @@ package com.treep;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import com.treep.config.GatewayConfigReader;
 import com.treep.config.RoutesConfigReader;
@@ -27,33 +28,43 @@ public class Main {
             throws ConfigurationReadingException, RoutesValidationException, IOException
     {
         GatewayConfig gwConfig = GatewayConfigReader.readEnv();
-        initStorage(gwConfig.getConfigLocation());
-        launchServer(gwConfig.getServerPort());
+
+        ObjectMapper yamlFormattedObjectMapper = new ObjectMapper(new YAMLFactory());
+        Routes configRoutes = readRoutesFromConfigFile(gwConfig.getConfigLocation(), yamlFormattedObjectMapper);
+        validateRoutes(configRoutes);
+        initStorage(configRoutes);
+
+        ApiGatewayHttpHandler gatewayHttpHandler = new ApiGatewayHttpHandler();
+        launchServer(gwConfig.getServerPort(), gatewayHttpHandler);
     }
 
-    private static void initStorage(String configPath) throws ConfigurationReadingException, RoutesValidationException {
-        log.info("+initStorage(): config path: {}", configPath);
-        ObjectMapper yamlReaderObjectMapper = new ObjectMapper(new YAMLFactory());
-        RoutesConfigReader configReader = new RoutesConfigReader(yamlReaderObjectMapper);
-        RoutesValidator routesValidator = new RoutesValidator();
+    private static Routes readRoutesFromConfigFile(String configFilePath, ObjectMapper fileFormatter) throws ConfigurationReadingException {
+        log.debug("+readRoutesFromConfigFile(): configFilePath: {}", configFilePath);
+        RoutesConfigReader configReader = new RoutesConfigReader(fileFormatter);
+        Routes readRoutes = configReader.readRouteProperties(configFilePath);
+        log.debug("-readRoutesFromConfigFile()");
+        return readRoutes;
+    }
 
-        log.debug("initStorage(): reading routes from path: {}", configPath);
-        Routes readedRoutes = configReader.readRouteProperties(configPath);
-        log.debug("initStorage(): routes successfully read");
+    private static void validateRoutes(Routes routesToValidate) throws RoutesValidationException {
+        log.debug("+validateRoutes()");
+        RoutesValidator.validateRoutes(routesToValidate);
+        log.debug("-validateRoutes()");
+    }
 
-        log.debug("initStorage(): validating routes");
-        routesValidator.validateRoutes(readedRoutes);
-        log.debug("initStorage(): routes successfully validated");
+    private static void initStorage(Routes storageRoutes) {
+        log.info("+initStorage()");
 
-        Map<String, RouteDefinition> storageReadyRoutes = RoutesConverter.extractSourceEndpointsToMap(readedRoutes);
+        Map<String, RouteDefinition> storageReadyRoutes = RoutesConverter.extractSourceEndpointsToMap(storageRoutes);
         RouteDefinitionStorage.setRouteDefinitionStorage(storageReadyRoutes);
+
         log.info("-initStorage(): storage successfully initiated");
     }
 
-    private static void launchServer(int port) throws IOException {
+    private static void launchServer(int port, HttpHandler rootHttpHandler) throws IOException {
         log.info("+launchServer(): launching server..");
         HttpServer s = HttpServer.create(new InetSocketAddress(port), 0);
-        s.createContext("/", new ApiGatewayHttpHandler());
+        s.createContext("/", rootHttpHandler);
         s.start();
         log.info("-launchServer(): server successfully initialized at port: {}", port);
     }
