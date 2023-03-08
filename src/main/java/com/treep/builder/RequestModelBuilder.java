@@ -64,16 +64,8 @@ public class RequestModelBuilder {
             String requestMethod, byte[] requestBody)
     {
         log.debug("+determineAndInjectRequestMethod():");
-        switch (requestMethod.toUpperCase()) {
-            case "GET" -> requestBuilder.GET();
-            case "POST" -> requestBuilder.POST(HttpRequest.BodyPublishers.ofByteArray(requestBody));
-            case "PUT" -> requestBuilder.PUT(HttpRequest.BodyPublishers.ofByteArray(requestBody));
-            case "DELETE" -> requestBuilder.DELETE();
-            default -> throw new RequestBuildingException(String.format(
-                    ERROR_BUILDING_REQUEST_MODEL,
-                    "Unsupported HTTP method: " + requestMethod.toUpperCase()
-                    ));
-        }
+        String requestMethodNormalized = requestMethod.toUpperCase().trim();
+        requestBuilder.method(requestMethodNormalized, HttpRequest.BodyPublishers.ofByteArray(requestBody));
         log.debug("-determineAndInjectRequestMethod()");
     }
 
