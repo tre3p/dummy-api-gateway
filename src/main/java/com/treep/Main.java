@@ -39,7 +39,9 @@ public class Main {
         launchServer(gwConfig.getServerPort(), gatewayHttpHandler);
     }
 
-    private static Routes readRoutesFromConfigFile(String configFilePath, ObjectMapper fileFormatter) throws ConfigurationReadingException {
+    private static Routes readRoutesFromConfigFile(String configFilePath, ObjectMapper fileFormatter)
+            throws ConfigurationReadingException
+    {
         log.debug("+readRoutesFromConfigFile(): configFilePath: {}", configFilePath);
         RoutesConfigReader configReader = new RoutesConfigReader(fileFormatter);
         Routes readRoutes = configReader.readRouteProperties(configFilePath);
@@ -47,7 +49,9 @@ public class Main {
         return readRoutes;
     }
 
-    private static void validateRoutes(Routes routesToValidate, RoutesValidator validator) throws RoutesValidationException {
+    private static void validateRoutes(Routes routesToValidate, RoutesValidator validator)
+            throws RoutesValidationException
+    {
         log.debug("+validateRoutes()");
         validator.validateRoutes(routesToValidate);
         log.debug("-validateRoutes()");
