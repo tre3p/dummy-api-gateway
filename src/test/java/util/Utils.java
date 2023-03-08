@@ -19,8 +19,4 @@ public class Utils {
     public static HttpResponse<byte[]> executeRequest(HttpRequest req) throws IOException, InterruptedException {
         return httpClient.send(req, HttpResponse.BodyHandlers.ofByteArray());
     }
-
-    public static void startServer() throws ConfigurationReadingException, RoutesValidationException, IOException {
-        Main.main(new String[]{});
-    }
 }
