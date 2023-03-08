@@ -14,10 +14,6 @@ import java.net.http.HttpResponse;
  */
 public class Utils {
 
-    public static final String FIXTURES_PATH = "src/test/resources/fixtures/";
-
-    public static final String TEST_GATEWAY_CONFIG_PATH = "src/test/resources/gateway-config-test.yml";
-
     private static final HttpClient httpClient = HttpClient.newBuilder().build();
 
     public static HttpResponse<byte[]> executeRequest(HttpRequest req) throws IOException, InterruptedException {

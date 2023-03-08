@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static util.Utils.FIXTURES_PATH;
+import static util.TestConstants.FIXTURES_PATH;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class RoutesConfigReaderTest {
