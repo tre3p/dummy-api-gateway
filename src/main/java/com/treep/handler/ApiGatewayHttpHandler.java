@@ -34,7 +34,6 @@ public class ApiGatewayHttpHandler implements HttpHandler {
 
     /**
      * Restricted headers for HTTP response
-     * TODO: describe
      */
     private static final Set<String> RESTRICTED_RESPONSE_HEADERS = Set.of("transfer-encoding");
 
