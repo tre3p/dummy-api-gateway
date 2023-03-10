@@ -100,7 +100,7 @@ public class HttpGetGatewayTest extends WiremockAbstractTest {
     }
 
     @Test
-    void shouldReturn() throws URISyntaxException, IOException, InterruptedException {
+    void shouldReturnBadRequestOnRequestTimeoutExceeded() throws URISyntaxException, IOException, InterruptedException {
         configureStubForResponseAfter10SecondsTimeout();
 
         HttpRequest req = HttpRequest.newBuilder()
