@@ -1,6 +1,8 @@
 package com.treep.util.constants;
 
-public class ErrorConstants {
+public final class ErrorConstants {
+
+    private ErrorConstants() { }
 
     public static final String SOURCE_ENDPOINT_FIELD_NAME = "source-endpoint";
 

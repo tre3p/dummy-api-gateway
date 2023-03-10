@@ -7,7 +7,9 @@ import static com.treep.util.constants.ConfigConstants.SERVER_PORT_ENV;
 import static com.treep.util.constants.ConfigConstants.SERVER_PORT_ENV_NOT_FOUND_VALUE;
 
 @Slf4j
-public class EnvUtils {
+public final class EnvUtils {
+
+    private EnvUtils() { }
 
     public static String getGatewayConfigLocation() {
         log.debug("+getGatewayConfigLocation()");

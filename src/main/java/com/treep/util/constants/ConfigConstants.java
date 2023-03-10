@@ -1,6 +1,8 @@
 package com.treep.util.constants;
 
-public class ConfigConstants {
+public final class ConfigConstants {
+
+    private ConfigConstants() { }
 
     public static final int DEFAULT_SERVER_PORT = 8080;
 

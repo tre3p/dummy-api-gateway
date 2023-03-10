@@ -1,6 +1,8 @@
 package com.treep.util.constants;
 
-public class HttpConstants {
+public final class HttpConstants {
+
+    private HttpConstants() { }
 
     public static final String CONTENT_TYPE = "Content-Type";
 

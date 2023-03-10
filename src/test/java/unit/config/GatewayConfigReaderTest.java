@@ -9,7 +9,7 @@ import org.junitpioneer.jupiter.SetEnvironmentVariable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class GatewayConfigReaderTest {
+class GatewayConfigReaderTest {
 
     private static final String EXPECTED_PORT = "5050";
 

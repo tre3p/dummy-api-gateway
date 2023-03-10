@@ -6,19 +6,19 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import com.treep.config.GatewayConfigReader;
 import com.treep.config.RoutesConfigReader;
-import com.treep.config.model.GatewayConfig;
 import com.treep.config.model.RouteDefinition;
 import com.treep.config.model.Routes;
 import com.treep.converter.RoutesConverter;
 import com.treep.exception.ConfigurationReadingException;
 import com.treep.exception.RoutesValidationException;
+import com.treep.executor.RequestExecutor;
 import com.treep.handler.ApiGatewayHttpHandler;
 import com.treep.storage.RouteDefinitionStorage;
 import com.treep.validator.RoutesValidator;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.http.HttpClient;
 import java.util.Map;
 
 @Slf4j
@@ -27,16 +27,28 @@ public class Main {
     public static void main(String[] args)
             throws ConfigurationReadingException, RoutesValidationException, IOException
     {
-        GatewayConfig gwConfig = GatewayConfigReader.readEnv();
+        log.debug("+main()");
+        var gwConfig = GatewayConfigReader.readEnv();
 
+        var validRoutes = prepareRoutes(gwConfig.getConfigLocation());
+        initStorage(validRoutes);
+
+        var gatewayHttpHandler = prepareHttpHandler();
+        launchServer(gwConfig.getServerPort(), gatewayHttpHandler);
+        log.debug("-main()");
+    }
+
+    private static Routes prepareRoutes(String configLocation)
+            throws ConfigurationReadingException, RoutesValidationException
+    {
+        log.debug("+prepareRoutes()");
         ObjectMapper yamlFormattedObjectMapper = new ObjectMapper(new YAMLFactory());
-        Routes configRoutes = readRoutesFromConfigFile(gwConfig.getConfigLocation(), yamlFormattedObjectMapper);
+        Routes configRoutes = readRoutesFromConfigFile(configLocation, yamlFormattedObjectMapper);
         RoutesValidator validator = new RoutesValidator();
         validateRoutes(configRoutes, validator);
-        initStorage(configRoutes);
 
-        ApiGatewayHttpHandler gatewayHttpHandler = new ApiGatewayHttpHandler();
-        launchServer(gwConfig.getServerPort(), gatewayHttpHandler);
+        log.debug("-prepareRoutes()");
+        return configRoutes;
     }
 
     private static Routes readRoutesFromConfigFile(String configFilePath, ObjectMapper fileFormatter)
@@ -64,6 +76,29 @@ public class Main {
         RouteDefinitionStorage.setRouteDefinitionStorage(storageReadyRoutes);
 
         log.info("-initStorage(): storage successfully initiated");
+    }
+
+    private static ApiGatewayHttpHandler prepareHttpHandler() {
+        log.debug("+prepareHttpHandler()");
+        HttpClient httpClient = buildDefaultHttpClient();
+
+        ObjectMapper jsonFormattedObjectMapper = new ObjectMapper();
+        RequestExecutor requestExecutor = new RequestExecutor(httpClient);
+        ApiGatewayHttpHandler gatewayHttpHandler = new ApiGatewayHttpHandler(
+                jsonFormattedObjectMapper,
+                requestExecutor
+        );
+
+        log.debug("-prepareHttpHandler()");
+        return gatewayHttpHandler;
+    }
+
+    private static HttpClient buildDefaultHttpClient() {
+        log.debug("buildDefaultHttpClient()");
+        return HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .followRedirects(HttpClient.Redirect.NEVER)
+                .build();
     }
 
     private static void launchServer(int port, HttpHandler rootHttpHandler) throws IOException {

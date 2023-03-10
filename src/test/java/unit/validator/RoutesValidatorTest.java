@@ -12,7 +12,7 @@ import java.util.List;
 import static com.treep.util.constants.ErrorConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RoutesValidatorTest {
+class RoutesValidatorTest {
 
     private Routes testRoutes;
 

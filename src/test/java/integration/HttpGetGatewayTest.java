@@ -24,7 +24,7 @@ import static util.TestConstants.TEST_TARGET_ENDPOINT;
 import static util.Utils.executeRequest;
 
 @WireMockTest(httpPort = 5050)
-public class HttpGetGatewayTest extends WiremockAbstractTest {
+class HttpGetGatewayTest extends WiremockAbstractTest {
 
     private static final String TEST_QUERY_PARAM = "?foo=bar&bar=baz";
 

@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public class RoutesConverter {
+public final class RoutesConverter {
+
+    private RoutesConverter() { }
 
     /**
      * Creates Map<String, RouteDefinition> from {@link Routes} passed in method, where key is 'source-endpoint',

@@ -9,7 +9,9 @@ import static com.treep.util.constants.ConfigConstants.DEFAULT_SERVER_PORT;
 import static com.treep.util.constants.ConfigConstants.SERVER_PORT_ENV_NOT_FOUND_VALUE;
 
 @Slf4j
-public class GatewayConfigReader {
+public final class GatewayConfigReader {
+
+    private GatewayConfigReader() { }
 
     public static GatewayConfig readEnv() {
         log.debug("+readEnv()");
