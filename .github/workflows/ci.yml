@@ -19,7 +19,7 @@ jobs:
       - name: Unit Tests
         run: mvn test
       - name: Publish test coverage
-        uses: paambaati/codeclimate-action@v2.7.5
+        uses: paambaati/codeclimate-action@v3.2.0
         env:
           CC_TEST_REPORTED_ID: ${{secrets.CC_TEST_REPORTER_ID}}
           JACOCO_SOURCE_PATH: src/main/java
