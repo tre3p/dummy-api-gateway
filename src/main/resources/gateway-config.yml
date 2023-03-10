@@ -1,5 +1,5 @@
 routes:
-  - target-url: http://localhost:8080/api/v1
+  - target-url: http://localhost:1234/api/v1
     source-endpoint: /sample-endpoint
     request-timeout: 10
   - target-url: http://localhost:9090/api/v1
