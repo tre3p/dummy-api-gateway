@@ -18,3 +18,10 @@ jobs:
         run: mvn checkstyle:check
       - name: Unit Tests
         run: mvn test
+      - name: Publish test coverage
+        env:
+          CC_TEST_REPORTED_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+          JACOCO_SOURCE_PATH: src/main/java
+        with:
+          coverageCommand: mvn jacoco:report
+          coverageLocations: ${{github.workspace}}/target/site/jacoco/jacoco.xml
