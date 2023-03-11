@@ -6,14 +6,17 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import com.treep.config.GatewayConfigReader;
 import com.treep.config.RoutesConfigReader;
+import com.treep.config.model.GatewayConfig;
 import com.treep.config.model.RouteDefinition;
 import com.treep.config.model.Routes;
 import com.treep.converter.RoutesConverter;
 import com.treep.exception.ConfigurationReadingException;
+import com.treep.exception.GatewayConfigValidationException;
 import com.treep.exception.RoutesValidationException;
 import com.treep.executor.RequestExecutor;
 import com.treep.handler.ApiGatewayHttpHandler;
 import com.treep.storage.RouteDefinitionStorage;
+import com.treep.validator.GatewayConfigValidator;
 import com.treep.validator.RoutesValidator;
 import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
@@ -25,11 +28,15 @@ import java.util.concurrent.Executors;
 @Slf4j
 public class Main {
 
-    public static void main(String[] args)
-            throws ConfigurationReadingException, RoutesValidationException, IOException
+    public static void main(String[] args) throws
+            ConfigurationReadingException,
+            RoutesValidationException,
+            IOException,
+            GatewayConfigValidationException
     {
         log.debug("+main()");
         var gwConfig = GatewayConfigReader.readEnv();
+        validateGatewayConfig(gwConfig);
 
         var validRoutes = prepareRoutes(gwConfig.getConfigLocation());
         initStorage(validRoutes);
@@ -41,6 +48,13 @@ public class Main {
                 gatewayHttpHandler)
         ;
         log.debug("-main()");
+    }
+
+    private static void validateGatewayConfig(GatewayConfig gatewayConfig) throws GatewayConfigValidationException {
+        log.debug("+validateGatewayConfig()");
+        GatewayConfigValidator validator = new GatewayConfigValidator();
+        validator.validateGatewayConfig(gatewayConfig);
+        log.debug("-validateGatewayConfig()");
     }
 
     private static Routes prepareRoutes(String configLocation)
