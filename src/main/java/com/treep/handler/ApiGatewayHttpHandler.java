@@ -30,12 +30,19 @@ import static com.treep.util.constants.HttpConstants.CONTENT_TYPE;
 @Slf4j
 public class ApiGatewayHttpHandler implements HttpHandler {
 
-    private static final ObjectMapper OM = new ObjectMapper();
-
     /**
      * Restricted headers for HTTP response
      */
     private static final Set<String> RESTRICTED_RESPONSE_HEADERS = Set.of("transfer-encoding");
+
+    private final ObjectMapper objectMapper;
+
+    private final RequestExecutor requestExecutor;
+
+    public ApiGatewayHttpHandler(ObjectMapper om, RequestExecutor requestExecutor) {
+        this.objectMapper = om;
+        this.requestExecutor = requestExecutor;
+    }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -54,7 +61,7 @@ public class ApiGatewayHttpHandler implements HttpHandler {
                     targetRequest.uri()
             );
 
-            responseDto = RequestExecutor.executeRequest(targetRequest);
+            responseDto = requestExecutor.executeRequest(targetRequest);
         } catch (RouteDefinitionNotFoundException | RequestBuildingException | RequestExecutionException e) {
             handleProblemWhileRequestExecution(exchange, e.getMessage());
             log.error("-handle(): error while handling request", e);
@@ -87,7 +94,7 @@ public class ApiGatewayHttpHandler implements HttpHandler {
         log.debug("+prepareErrorMessage()");
         GatewaySourceResponseDto responseDto = new GatewaySourceResponseDto(messageContent);
         log.debug("-prepareErrorMessage()");
-        return OM.writeValueAsString(responseDto);
+        return objectMapper.writeValueAsString(responseDto);
     }
 
     private void sendProxyResponse(HttpExchange exchange, GatewayTargetResponseDto responseDto) throws IOException {

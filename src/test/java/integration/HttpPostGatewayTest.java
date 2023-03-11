@@ -21,7 +21,7 @@ import static util.TestConstants.TEST_SOURCE_URL;
 import static util.TestConstants.TEST_TARGET_ENDPOINT;
 
 @WireMockTest(httpPort = 5050)
-public class HttpPostGatewayTest extends WiremockAbstractTest {
+class HttpPostGatewayTest extends WiremockAbstractTest {
 
     @Test
     void shouldCorrectlyPassJsonToMockServer() throws URISyntaxException, IOException, InterruptedException {

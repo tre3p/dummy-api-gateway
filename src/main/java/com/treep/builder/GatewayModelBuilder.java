@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class GatewayModelBuilder {
+public final class GatewayModelBuilder {
 
     /**
      * Set of disallowed HTTP headers, which are not acceptable by {@link java.net.http.HttpRequest.Builder}
@@ -27,6 +27,8 @@ public class GatewayModelBuilder {
             "host",
             "upgrade"
     );
+
+    private GatewayModelBuilder() { }
 
     public static GatewayModel buildGatewayModel(HttpExchange httpExchange) throws IOException {
         log.debug("+processExchange()");

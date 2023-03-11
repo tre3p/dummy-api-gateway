@@ -1,6 +1,8 @@
 package com.treep.util.constants;
 
-public class ErrorConstants {
+public final class ErrorConstants {
+
+    private ErrorConstants() { }
 
     public static final String SOURCE_ENDPOINT_FIELD_NAME = "source-endpoint";
 
@@ -26,4 +28,8 @@ public class ErrorConstants {
     public static final String ERROR_BUILDING_REQUEST_MODEL = "Error while building request model. %s";
 
     public static final String ERROR_EXECUTING_REQUEST = "Error while executing request. Cause: %s";
+
+    public static final String VALUE_IS_NOT_NUMERIC = "Passed value is not numeric. Error: %s";
+
+    public static final String ROUTE_PATH_CANT_BE_FOUND = "Route path at '%s' is not valid.";
 }

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static util.TestConstants.FIXTURES_PATH;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class RoutesConfigReaderTest {
+class RoutesConfigReaderTest {
 
     private RoutesConfigReader routesConfigReader;
 

@@ -15,17 +15,18 @@ import static com.treep.util.constants.ErrorConstants.ERROR_EXECUTING_REQUEST;
 @Slf4j
 public class RequestExecutor {
 
-    private static final HttpClient CLIENT = HttpClient.newBuilder()
-            .version(HttpClient.Version.HTTP_1_1)
-            .followRedirects(HttpClient.Redirect.NEVER)
-            .build();
+    private final HttpClient httpClient;
 
-    public static GatewayTargetResponseDto executeRequest(HttpRequest request) {
+    public RequestExecutor(HttpClient client) {
+        this.httpClient = client;
+    }
+
+    public GatewayTargetResponseDto executeRequest(HttpRequest request) {
         log.debug("+executeRequest():");
         HttpResponse<byte[]> response;
 
         try {
-            response = CLIENT.send(request, HttpResponse.BodyHandlers.ofByteArray());
+            response = httpClient.send(request, HttpResponse.BodyHandlers.ofByteArray());
         } catch (Exception e) {
             log.error("-executeRequest(): error while executing request", e);
             String errorMessage = String.format(
@@ -40,7 +41,7 @@ public class RequestExecutor {
         return responseDto;
     }
 
-    private static GatewayTargetResponseDto processResponse(HttpResponse<byte[]> response) {
+    private GatewayTargetResponseDto processResponse(HttpResponse<byte[]> response) {
         log.debug("+processResponse()");
         Map<String, String> responseHeaders = convertHeadersToMap(response.headers());
         int responseStatus = response.statusCode();
@@ -60,7 +61,7 @@ public class RequestExecutor {
         return responseDto;
     }
 
-    private static Map<String, String> convertHeadersToMap(HttpHeaders headers) {
+    private Map<String, String> convertHeadersToMap(HttpHeaders headers) {
         log.debug("+convertHeaders()");
         Map<String, String> result = new HashMap<>();
 

@@ -14,7 +14,9 @@ import java.util.Map;
 import static com.treep.util.constants.ErrorConstants.ERROR_BUILDING_REQUEST_MODEL;
 
 @Slf4j
-public class RequestModelBuilder {
+public final class RequestModelBuilder {
+
+    private RequestModelBuilder() { }
 
     public static HttpRequest buildHttpRequestModel(GatewayModel requestModel) {
         log.debug("+buildRequestModel()");
