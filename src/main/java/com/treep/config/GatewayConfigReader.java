@@ -4,9 +4,7 @@ import com.treep.config.model.GatewayConfig;
 import com.treep.util.EnvUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.treep.util.constants.ConfigConstants.DEFAULT_GATEWAY_CONFIG_LOCATION;
-import static com.treep.util.constants.ConfigConstants.DEFAULT_SERVER_PORT;
-import static com.treep.util.constants.ConfigConstants.SERVER_PORT_ENV_NOT_FOUND_VALUE;
+import static com.treep.util.constants.ConfigConstants.*;
 
 @Slf4j
 public final class GatewayConfigReader {
@@ -15,34 +13,33 @@ public final class GatewayConfigReader {
 
     public static GatewayConfig readEnv() {
         log.debug("+readEnv()");
-        String gatewayConfigLocation = readGatewayConfigLocation();
-        int serverPort = readServerPortEnv();
+        String gatewayConfigLocation = readConfigEnv(GATEWAY_CONFIG_LOCATION_ENV, DEFAULT_GATEWAY_CONFIG_LOCATION);
+        String serverPort = readConfigEnv(SERVER_PORT_ENV, DEFAULT_SERVER_PORT);
+        String serverThreadCount = readConfigEnv(SERVER_THREAD_COUNT, DEFAULT_SERVER_THREAD_COUNT);
 
         GatewayConfig gwConfig = new GatewayConfig(
                 serverPort,
-                gatewayConfigLocation
+                gatewayConfigLocation,
+                serverThreadCount
         );
 
         log.debug("-readEnv(): gwConfig: {}", gwConfig);
         return gwConfig;
     }
 
-    private static int readServerPortEnv() {
-        log.debug("+readServerPortEnv()");
-        int serverPort = EnvUtils.getServerPort();
+    private static String readConfigEnv(String envName, String defaultValue) {
+        log.debug("+readConfigEnv(): envName: {}", envName);
 
-        serverPort = serverPort == SERVER_PORT_ENV_NOT_FOUND_VALUE ? DEFAULT_SERVER_PORT : serverPort;
-        log.debug("-readServerPortEnv(): serverPort: {}", serverPort);
-        return serverPort;
+        String envValue = EnvUtils.getEnv(envName);
+
+        if (envValue == null) {
+            log.debug("-readConfigEnv(): defaultValue: {}", defaultValue);
+            return defaultValue;
+        }
+
+        log.debug("-readConfigValue(): envValue: {}", envValue);
+        return envValue;
     }
 
-    private static String readGatewayConfigLocation() {
-        log.debug("+getGatewayConfigLocation():");
-        String gatewayConfigLocation = EnvUtils.getGatewayConfigLocation();
-
-        gatewayConfigLocation = gatewayConfigLocation == null ? DEFAULT_GATEWAY_CONFIG_LOCATION : gatewayConfigLocation;
-        log.debug("-getGatewayConfigLocation(): gatewayConfigLocation: {}", gatewayConfigLocation);
-        return gatewayConfigLocation;
-    }
 
 }
