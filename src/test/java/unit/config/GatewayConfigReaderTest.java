@@ -28,7 +28,7 @@ class GatewayConfigReaderTest {
     void shouldCorrectlyReadPortFromEnv() {
         GatewayConfig actualConfig = GatewayConfigReader.readEnv();
 
-        assertEquals(Integer.parseInt(EXPECTED_PORT), actualConfig.getServerPort());
+        assertEquals(EXPECTED_PORT, actualConfig.getServerPort());
     }
 
     @Test
@@ -48,6 +48,6 @@ class GatewayConfigReaderTest {
         GatewayConfig actualConfig = GatewayConfigReader.readEnv();
 
         assertEquals(EXPECTED_CONFIG_FILE_NAME, actualConfig.getConfigLocation());
-        assertEquals(Integer.parseInt(EXPECTED_PORT), actualConfig.getServerPort());
+        assertEquals(EXPECTED_PORT, actualConfig.getServerPort());
     }
 }

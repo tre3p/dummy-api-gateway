@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.http.HttpClient;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 @Slf4j
 public class Main {
@@ -34,7 +35,11 @@ public class Main {
         initStorage(validRoutes);
 
         var gatewayHttpHandler = prepareHttpHandler();
-        launchServer(gwConfig.getServerPort(), gatewayHttpHandler);
+        launchServer(
+                Integer.parseInt(gwConfig.getServerPort()),
+                Integer.parseInt(gwConfig.getServerThreadCount()),
+                gatewayHttpHandler)
+        ;
         log.debug("-main()");
     }
 
@@ -101,10 +106,11 @@ public class Main {
                 .build();
     }
 
-    private static void launchServer(int port, HttpHandler rootHttpHandler) throws IOException {
+    private static void launchServer(int port, int serverThreadCount, HttpHandler rootHttpHandler) throws IOException {
         log.info("+launchServer(): launching server..");
         HttpServer s = HttpServer.create(new InetSocketAddress(port), 0);
         s.createContext("/", rootHttpHandler);
+        s.setExecutor(Executors.newFixedThreadPool(serverThreadCount));
         s.start();
         log.info("-launchServer(): server successfully initialized at port: {}", port);
     }

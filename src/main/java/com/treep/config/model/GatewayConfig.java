@@ -7,8 +7,10 @@ import lombok.Data;
 @AllArgsConstructor
 public class GatewayConfig {
 
-    private int serverPort;
+    private String serverPort;
 
     private String configLocation;
+
+    private String serverThreadCount;
 
 }
