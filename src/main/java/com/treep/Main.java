@@ -45,8 +45,7 @@ public class Main {
         launchServer(
                 Integer.parseInt(gwConfig.getServerPort()),
                 Integer.parseInt(gwConfig.getServerThreadCount()),
-                gatewayHttpHandler)
-        ;
+                gatewayHttpHandler);
         log.debug("-main()");
     }
 

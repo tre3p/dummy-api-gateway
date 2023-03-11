@@ -4,7 +4,12 @@ import com.treep.config.model.GatewayConfig;
 import com.treep.util.EnvUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.treep.util.constants.ConfigConstants.*;
+import static com.treep.util.constants.ConfigConstants.DEFAULT_GATEWAY_CONFIG_LOCATION;
+import static com.treep.util.constants.ConfigConstants.DEFAULT_SERVER_PORT;
+import static com.treep.util.constants.ConfigConstants.DEFAULT_SERVER_THREAD_COUNT;
+import static com.treep.util.constants.ConfigConstants.GATEWAY_CONFIG_LOCATION_ENV;
+import static com.treep.util.constants.ConfigConstants.SERVER_PORT_ENV;
+import static com.treep.util.constants.ConfigConstants.SERVER_THREAD_COUNT;
 
 @Slf4j
 public final class GatewayConfigReader {
