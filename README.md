@@ -15,7 +15,7 @@ The project is not intended to be used in a production environment. It is a clas
 
 ## Configuration
 
-## Route Configuration
+### Route Configuration
 
 Project uses YAML configuration, which is located by default in `/src/test/resources` and named `gateway-config.yml`. This setting can be changed using the environment variables which will be described in this block.
 
