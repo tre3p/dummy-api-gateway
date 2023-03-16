@@ -49,4 +49,38 @@ Project uses environment variables to configure some of the parameters:
 
 ## Usage
 
-TODO
+At the moment, there are two ways to run the service - via docker and via running jar.
+
+### Docker
+
+In the root of the project there is a Dockerfile, which already contains all the necessary instructions to run the project in the Docker. All you have to do is change the environment variables inside of Dockerfile, build the image and run it.
+
+Steps:
+1) Add your own routes configuration in `route-cfg.yml` file in root directory.
+2) (Optional) Edit environment variables placed in Dockerfile.
+3) Build the image with command:
+   ```
+   docker build -t treep/dummy-gateway:1.0.0 .
+   ```
+4) Run the image with command:
+   ```
+   # You need to place port which exposed in Dockerfile inside of '-p' section
+   docker run -d treep/dummy-gateway:1.0.0 -p 8080:8080
+   ```
+   
+### JAR
+
+Steps:
+1) Go to the root directory of project and execute command:
+    ```
+   mvn clean package
+    ```
+2) Go to `/target` directory and take `.jar` file
+    ```
+   cd target/
+    ```
+3) Define environment variables or use the default one:
+   ```
+   mv *.jar ../
+   java -jar *.jar
+   ```
