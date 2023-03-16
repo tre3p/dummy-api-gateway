@@ -33,7 +33,7 @@ routes:
 
 1) `routes` - is a YAML collection which can contain multiple elements of your configuration.
 2) `target-url` - URL to which request will be sent if a request was received at `source-endpoint`
-3) `request-timeout` - timeout during which the connection to target-url will be reset if not response is received.
+3) `request-timeout` - timeout during which the connection to target-url will be reset if no response is received.
 
 Service supports any HTTP methods, passes the body of the request, as well as query parameters, if they were passed.
 
