@@ -79,8 +79,12 @@ Steps:
     ```
    cd target/
     ```
-3) Define environment variables or use the default one:
+3) Define environment variables or use the default one.
+4) Move `.jar` file to directory with configuration file or set environment variable which specifies path to configuration file.
    ```
    mv *.jar ../
+   ```
+5) Run the `.jar` file
+   ```
    java -jar *.jar
    ```
